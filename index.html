@@ -332,7 +332,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   </div>
 </section>
 <!-- PROBLEM -->
-<section class="relative py-24 md:py-32 px-6 grid-bg">
+<section class="relative hidden py-24 md:py-32 px-6 grid-bg">
   <div class="max-w-5xl mx-auto">
     <span class="reveal text-tertiary" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.25em">// The Problem</span>
     <h2 class="reveal d1 mt-6 text-[clamp(1.6rem,4vw,2.8rem)] font-semibold text-white max-w-3xl" data-words style="font-family:'Space Grotesk',sans-serif">Media-wall content is still built one fragmented, site-by-site project at a time.</h2>
@@ -784,7 +784,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   function placeDeck(nodes, focus, options){
     var o=options||{}, travel=o.travel||window.innerHeight*(o.vh||0.86), blur=o.blur||14, scale=o.scale||0.035;
     var dir=o.side==='right'?1:-1, throwX=o.throwX||window.innerWidth*(o.throwVw||0.18), incomingX=o.incomingX||window.innerWidth*(o.incomingVw||0.06);
-    var fadeStart=o.fadeStart==null?0.52:o.fadeStart, fadeEnd=o.fadeEnd==null?1.16:o.fadeEnd;
+    var fadeStart=o.fadeStart==null?0.52:o.fadeStart, fadeEnd=o.fadeEnd==null?1.16:o.fadeEnd, incomingBlur=o.incomingBlur==null?12:o.incomingBlur;
     nodes.forEach(function(el,idx){
       var n=Number(el.dataset.i);
       if(!Number.isFinite(n)) n=idx;
@@ -796,7 +796,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       var x=dir*exit*throwX - dir*incoming*incomingX;
       var y=delta*travel;
       var sc=1-Math.min(abs*scale,0.08);
-      var b=delta>0 ? Math.min((1-gather)*16+abs*3,18) : Math.min(abs*blur,18);
+      var b=delta>0 ? Math.min((1-gather)*incomingBlur+abs*1.25,incomingBlur) : Math.min(abs*blur,blur);
       var rot=dir*(-exit*3.2 + incoming*.85);
       var grain=delta>0 ? clamp(opacity*(1-gather)*1.35 + opacity*.16,0,1) : opacity*clamp(abs*.9,0,.72);
       if(abs<.08) grain=0;
@@ -811,7 +811,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       el.style.setProperty('--grain-x', (dir*(incoming-exit)*18).toFixed(1)+'px');
       el.style.setProperty('--solid', solid.toFixed(3));
       el.style.setProperty('--solid-x', (dir*incoming*(1-gather)*34).toFixed(1)+'px');
-      el.style.setProperty('--solid-blur', (delta>0?(1-gather)*18:0).toFixed(2)+'px');
+      el.style.setProperty('--solid-blur', (delta>0?(1-gather)*incomingBlur:0).toFixed(2)+'px');
       el.style.zIndex=String(100-Math.round(abs*10));
       el.style.pointerEvents=abs<0.28?'auto':'none';
       el.style.visibility=opacity>0.012?'visible':'hidden';
@@ -829,7 +829,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       var y=delta*travel;
       var x=o.lockX===false?delta*lateral:0;
       var scale=1-Math.min(abs*scaleAmt,0.08);
-      var b=Math.min(abs*blur,10);
+      var b=Math.min(abs*blur,blur);
       var angle=o.lockX===false?delta*rotate:0;
       el.style.opacity=opacity.toFixed(3);
       el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) rotateZ('+angle.toFixed(2)+'deg) scale('+scale.toFixed(4)+')';
@@ -881,8 +881,8 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         if(reelNum) reelNum.textContent=('0'+(i+1)).slice(-2)+'/'+('0'+reelPanels.length).slice(-2);
       }
       if(reelFill) reelFill.style.width=(p*100).toFixed(2)+'%';
-      placeDeck(reelPanels, focus, {side:'left', vh:0.9, blur:16, scale:0.032, fadeStart:0.7, fadeEnd:1.55, throwVw:0.22, incomingVw:0.075});
-      placeVisualDeck(reelMedia, focus, {vh:0.88, blur:8, scale:0.026, fadeStart:0.38, fadeEnd:1.12});
+      placeDeck(reelPanels, focus, {side:'left', vh:0.9, blur:4.5, incomingBlur:4.5, scale:0.032, fadeStart:0.95, fadeEnd:1.36, throwVw:0.22, incomingVw:0.075});
+      placeVisualDeck(reelMedia, focus, {vh:0.88, blur:2.5, scale:0.026, fadeStart:0.58, fadeEnd:0.98});
       if(changed || inView!==reelInViewLast){
         playStoryVideo(i, inView, focus);
         reelInViewLast=inView;
