@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anamofit - Adaptive AI Production for Anamorphic Media Walls</title>
+<meta name="description" content="Anamofit notices, news and announcements."/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/site.css"/>
+<script>
+tailwind.config = { darkMode:"class", theme:{ extend:{
+  colors:{ "cyber-cyan":"#00E0FF","primary":"#93ccff","primary-container":"#00aaff","tertiary":"#ecb2ff","tertiary-container":"#d97bff","on-surface":"#e5e2e1","on-surface-variant":"#bec7d3","void-surface":"#121218","deep-navy":"#050516","text-silver":"#E0E0E0" },
+  fontFamily:{ display:["Space Grotesk","sans-serif"], head:["Space Grotesk","sans-serif"], body:["Hanken Grotesk","sans-serif"], mono:["JetBrains Mono","monospace"] },
+}}}
+</script>
+</head>
+<body class="min-h-screen flex flex-col">
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<!-- NAV -->
+<nav id="nav" class="site-nav">
+  <a href="index.html#top" class="brand">ANAMOFIT</a>
+  <div class="nav-menu">
+    <a class="nav-link" href="index.html#about">About</a>
+    <a class="nav-link" href="index.html#reel">Design</a>
+    <a class="nav-link" href="index.html#tech">Technology</a>
+    <a class="nav-link active" href="board.html">Board</a>
+    <a class="nav-link" href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<main class="flex-grow relative z-10">
+  <!-- HEADER -->
+  <header class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-kicker no-number reveal"><span class="page-name">Board</span></div>
+      <h1 class="page-title reveal d1">Notices &amp; News</h1>
+      <p class="page-copy reveal d2">Announcements, updates, and milestones from the Anamofit project.</p>
+    </div>
+  </header>
+
+  <!-- BOARD -->
+  <section class="px-6 py-20 md:py-24">
+    <div class="max-w-7xl mx-auto">
+      <!-- filters -->
+      <div class="reveal flex flex-wrap gap-3 mb-10 mono" style="font-size:13px;text-transform:uppercase;letter-spacing:.1em">
+        <button class="filter-btn active px-5 py-2.5 rounded-full border border-cyber-cyan/40 text-cyber-cyan bg-cyber-cyan/5" data-filter="all">All</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full border border-white/10 text-on-surface-variant hover:text-white transition" data-filter="notice">Notice</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full border border-white/10 text-on-surface-variant hover:text-white transition" data-filter="news">News</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full border border-white/10 text-on-surface-variant hover:text-white transition" data-filter="award">Award</button>
+      </div>
+
+      <div id="board-list" class="flex flex-col gap-5"></div>
+      <p class="board-end-note mt-10 text-center text-on-surface-variant/50 mono" style="font-size:12px">End of notices</p>
+
+    </div>
+  </section>
+</main>
+
+<footer class="relative z-10 border-t border-white/5 bg-[#070708] px-6 py-12">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="head text-2xl font-bold text-text-silver">ANAMOFIT</div>
+    <div class="flex flex-wrap gap-6 justify-center text-on-surface-variant/70 mono" style="font-size:12px;text-transform:uppercase;letter-spacing:.12em">
+      <a href="index.html#about" class="hover:text-cyber-cyan transition-colors">About</a><a href="index.html#reel" class="hover:text-cyber-cyan transition-colors">Design</a><a href="index.html#tech" class="hover:text-cyber-cyan transition-colors">Technology</a><a href="board.html" class="hover:text-cyber-cyan transition-colors">Board</a><a href="contact.html" class="hover:text-cyber-cyan transition-colors">Contact</a>
+    </div>
+    <div class="text-on-surface-variant/40 text-center md:text-right mono" style="font-size:11px;letter-spacing:.1em">&copy; 2026 ANAMOFIT.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var CSV_FILE = 'board_contents.csv';
+  var POSTS = [];
+  var CAT = {
+    notice:{ label:"Notice", color:"#93ccff" },
+    news:{ label:"News", color:"#00E0FF" },
+    award:{ label:"Award", color:"#ecb2ff" }
+  };
+
+  var list = document.getElementById('board-list');
+  var activeFilter = 'all';
+  var CSV_STATE = { tried:[], loadedFrom:'' };
+  window.__boardCSV = CSV_STATE;
+
+  function escapeHTML(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+
+  function parseCSV(text){
+    text = String(text || '').replace(/^\uFEFF/, '').replace(/\u0000/g, '');
+    var rows = [], row = [], field = '', quoted = false;
+    for(var i=0;i<text.length;i++){
+      var ch = text[i], next = text[i+1];
+      if(quoted){
+        if(ch === '"' && next === '"'){ field += '"'; i++; }
+        else if(ch === '"'){ quoted = false; }
+        else { field += ch; }
+      } else if(ch === '"'){
+        quoted = true;
+      } else if(ch === ','){
+        row.push(field); field = '';
+      } else if(ch === '\n'){
+        row.push(field); rows.push(row); row = []; field = '';
+      } else if(ch !== '\r'){
+        field += ch;
+      }
+    }
+    if(field || row.length){ row.push(field); rows.push(row); }
+    if(!rows.length) return [];
+    var headers = rows.shift().map(function(h){ return h.trim().toLowerCase(); });
+    return rows.filter(function(r){ return r.some(function(v){ return String(v).trim(); }); }).map(function(r){
+      var item = {};
+      headers.forEach(function(h,idx){ item[h] = (r[idx] || '').trim(); });
+      return item;
+    }).filter(function(p){ return p.date && p.cat && p.title; });
+  }
+
+  function showMessage(message){
+    list.innerHTML = '<div class="reveal in glass rounded-2xl p-7 text-on-surface-variant">'+escapeHTML(message)+'</div>';
+  }
+
+  function unique(list){
+    var seen = {};
+    return list.filter(function(url){
+      if(seen[url]) return false;
+      seen[url] = true;
+      return true;
+    });
+  }
+
+  function csvURLs(){
+    var href = window.location.href;
+    var urls = [
+      new URL('board/' + CSV_FILE, href).href,
+      new URL('./board/' + CSV_FILE, href).href,
+      new URL(CSV_FILE, new URL('board/', href)).href,
+      new URL(CSV_FILE, href).href
+    ];
+    if(window.location.protocol === 'http:' || window.location.protocol === 'https:'){
+      urls.push(window.location.origin + '/board/' + CSV_FILE);
+    }
+    return unique(urls);
+  }
+
+  function decodeCSVBuffer(buffer){
+    if(!buffer) return '';
+    var bytes = new Uint8Array(buffer);
+    var encoding = 'utf-8';
+    if(bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) encoding = 'utf-16le';
+    else if(bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) encoding = 'utf-16be';
+    else {
+      var evenZeros = 0, oddZeros = 0, sample = Math.min(bytes.length, 200);
+      for(var i=0;i<sample;i++){
+        if(bytes[i] === 0) (i % 2 ? oddZeros++ : evenZeros++);
+      }
+      if(oddZeros > sample * 0.2) encoding = 'utf-16le';
+      else if(evenZeros > sample * 0.2) encoding = 'utf-16be';
+    }
+    try {
+      return new TextDecoder(encoding).decode(buffer);
+    } catch(err){
+      return new TextDecoder('utf-8').decode(buffer);
+    }
+  }
+
+  function withCacheBust(url){
+    if(url.indexOf('http://') === 0 || url.indexOf('https://') === 0){
+      return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + Date.now();
+    }
+    return url;
+  }
+
+  function requestText(url){
+    var target = withCacheBust(url);
+    return fetch(target, { cache:'no-store' })
+      .then(function(res){
+        if(!res.ok) throw new Error('CSV request failed: ' + res.status + ' ' + url);
+        return res.arrayBuffer();
+      })
+      .then(function(buffer){
+        return decodeCSVBuffer(buffer);
+      })
+      .catch(function(fetchErr){
+        return new Promise(function(resolve, reject){
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', target, true);
+          xhr.responseType = 'arraybuffer';
+          xhr.onload = function(){
+            if(xhr.status === 0 || (xhr.status >= 200 && xhr.status < 300)) resolve(decodeCSVBuffer(xhr.response));
+            else reject(fetchErr);
+          };
+          xhr.onerror = function(){ reject(fetchErr); };
+          xhr.send();
+        });
+      });
+  }
+
+  function loadFromURLS(urls, index){
+    var url = urls[index];
+    if(!url) return Promise.reject(new Error('No CSV URL matched.'));
+    return requestText(url)
+      .then(function(text){
+        var posts = parseCSV(text);
+        if(!posts.length) throw new Error('CSV loaded but no posts parsed: ' + url);
+        return { url:url, posts:posts };
+      })
+      .catch(function(err){
+        console.warn(err);
+        return loadFromURLS(urls, index + 1);
+      });
+  }
+
+  function loadPosts(){
+    showMessage('Loading board contents...');
+    CSV_STATE.tried = csvURLs();
+    CSV_STATE.loadedFrom = '';
+    return loadFromURLS(CSV_STATE.tried, 0)
+      .then(function(result){
+        POSTS = result.posts;
+        CSV_STATE.loadedFrom = result.url;
+        console.info('Board contents loaded from', result.url);
+        render(activeFilter);
+      })
+      .catch(function(err){
+        console.error(err);
+        POSTS = [];
+        showMessage('Board contents could not be loaded. Please check board/board_contents.csv or open this page through the local server.');
+      });
+  }
+
+  function render(filter){
+    activeFilter = filter || 'all';
+    list.innerHTML='';
+    var filtered = POSTS.filter(function(p){ return activeFilter==='all' || p.cat===activeFilter; });
+    if(!filtered.length){
+      showMessage(activeFilter === 'all' ? 'No board contents found.' : 'No posts in this category.');
+      return;
+    }
+    filtered.forEach(function(p,i){
+      var c = CAT[p.cat] || {label:p.cat,color:'#bec7d3'};
+      var el = document.createElement('div');
+      el.className='reveal glass rounded-2xl overflow-hidden';
+      if(i>0) el.classList.add('d1');
+      el.innerHTML =
+        '<button class="post-toggle w-full text-left p-6 md:p-7 flex items-start gap-5 hover:bg-white/[0.03] transition">'+
+          '<div class="shrink-0 mono text-on-surface-variant/60" style="font-size:12px;min-width:92px">'+escapeHTML(p.date)+'</div>'+
+          '<div class="flex-grow">'+
+            '<span class="inline-block mono mb-2" style="font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:'+c.color+';border:1px solid '+c.color+'55;border-radius:9999px;padding:2px 10px">'+escapeHTML(c.label)+'</span>'+
+            '<h3 class="head text-lg md:text-xl text-white">'+escapeHTML(p.title)+'</h3>'+
+          '</div>'+
+          '<span class="material-symbols-outlined text-on-surface-variant/60 transition-transform shrink-0">expand_more</span>'+
+        '</button>'+
+        '<div class="post-body" style="max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1)">'+
+          '<p class="px-6 md:px-7 pb-7 pl-6 md:pl-[120px] text-on-surface-variant leading-relaxed">'+escapeHTML(p.body)+'</p>'+
+        '</div>';
+      list.appendChild(el);
+    });
+    bindToggles();
+    observeReveals();
+  }
+
+  function bindToggles(){
+    document.querySelectorAll('.post-toggle').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var body = btn.nextElementSibling;
+        var icon = btn.querySelector('.material-symbols-outlined');
+        var open = body.style.maxHeight && body.style.maxHeight!=='0px';
+        if(open){ body.style.maxHeight='0'; icon.style.transform='none'; }
+        else { body.style.maxHeight = body.scrollHeight+'px'; icon.style.transform='rotate(180deg)'; }
+      });
+    });
+  }
+
+  /* filters */
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(x){ x.classList.remove('active','border-cyber-cyan/40','text-cyber-cyan','bg-cyber-cyan/5'); x.classList.add('border-white/10','text-on-surface-variant'); });
+      b.classList.add('active','border-cyber-cyan/40','text-cyber-cyan','bg-cyber-cyan/5'); b.classList.remove('border-white/10','text-on-surface-variant');
+      render(b.dataset.filter || 'all');
+    });
+  });
+
+  /* reveal */
+  var io;
+  function observeReveals(){
+    if(!io) io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{threshold:0.1});
+    document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ io.observe(el); });
+  }
+
+  loadPosts();
+
+  /* nav condense */
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll', function(){ nav.classList.toggle('compact', window.scrollY>40); }, {passive:true});
+
+})();
+</script>
+<script src="assets/stars.js?v=2"></script>
+<script src="assets/cursor.js?v=3"></script>
+</body>
+</html>
