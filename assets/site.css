@@ -28,13 +28,13 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .site-nav a:hover,.site-nav a.active{ color:#00E0FF; }
 .site-nav.compact{ min-height:72px; }
 
-.page-hero{ position:relative; z-index:1; min-height:calc(82svh - var(--nav-h)); display:flex; align-items:center; padding:clamp(5rem,12vh,9rem) clamp(24px,7vw,120px) clamp(4rem,10vh,8rem); overflow:hidden; border-bottom:1px solid rgba(255,255,255,.05); }
+.page-hero{ position:relative; z-index:1; min-height:calc(60svh - var(--nav-h)); display:flex; align-items:center; padding:clamp(5rem,12vh,9rem) clamp(24px,7vw,120px) clamp(4rem,10vh,8rem); overflow:hidden; border-bottom:1px solid rgba(255,255,255,.05); }
 .page-hero:before{ content:""; position:absolute; inset:0; z-index:-1; background:radial-gradient(circle at 23% 36%, rgba(0,224,255,.12), transparent 30%), radial-gradient(circle at 83% 62%, rgba(217,123,255,.10), transparent 32%); pointer-events:none; }
-.page-hero-inner{ width:min(1480px,100%); margin-inline:auto; display:grid; grid-template-columns:minmax(0,1fr); align-items:start; }
+.page-hero-inner{ width:min(1240px,100%); margin-inline:auto; display:grid; grid-template-columns:minmax(0,1fr); align-items:start; }
 .page-kicker{ grid-column:1 / -1; width:100%; display:grid; grid-template-columns:minmax(4rem,7vw) minmax(0,1fr); align-items:end; column-gap:clamp(1.5rem,4vw,4.5rem); padding-bottom:clamp(1.1rem,2vw,1.7rem); border-bottom:1px solid rgba(0,224,255,.48); font-family:'JetBrains Mono',monospace; text-transform:uppercase; }
 .page-kicker.no-number{ grid-template-columns:minmax(0,1fr); }
 .page-no{ align-self:center; color:#00E0FF; font-size:clamp(1rem,1.35vw,1.45rem); letter-spacing:.22em; font-weight:600; }
-.page-name{ font-family:'Space Grotesk',sans-serif; font-size:clamp(5.2rem,11vw,11rem); line-height:.88; letter-spacing:0; text-transform:none; color:#fff; font-weight:700; }
+.page-name{ font-family:'Space Grotesk',sans-serif; font-size:clamp(5.2rem,11vw,9rem); line-height:.88; letter-spacing:0; text-transform:none; color:#fff; font-weight:700; }
 .page-title{ grid-column:1 / -1; margin-top:clamp(2.1rem,5vw,4.8rem); width:100%; max-width:none; font-family:'Space Grotesk',sans-serif; font-size:clamp(1.9rem,3.25vw,3.8rem); line-height:1.08; font-weight:700; color:#fff; }
 .page-copy{ grid-column:1 / -1; margin-top:clamp(1.15rem,2vw,1.8rem); width:100%; max-width:none; color:#bec7d3; font-size:clamp(1.05rem,1.35vw,1.24rem); line-height:1.7; align-self:start; }
 .page-hero .reveal.d2.mt-4.text-lg.text-on-surface-variant{ display:none; }
