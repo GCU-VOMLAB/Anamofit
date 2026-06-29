@@ -47,7 +47,8 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         <iframe id="contact-map" class="block h-full min-h-[520px] w-full md:min-h-[620px]" title="Google map showing Gachon University" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 
-      <form id="contact-form" class="reveal glass rounded-2xl p-8 md:p-10 flex w-full flex-col gap-6" novalidate>
+      <form id="contact-form" class="reveal glass rounded-2xl p-8 md:p-10 flex w-full flex-col gap-6" action="https://formspree.io/f/xgojzayq" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="[ANAMOFIT] Contact mail received"/>
           <div class="grid sm:grid-cols-2 gap-6">
             <label class="flex flex-col gap-2">
               <span class="mono text-on-surface-variant/70" style="font-size:11px;text-transform:uppercase;letter-spacing:.12em">Name</span>
@@ -88,11 +89,8 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
 <script>
 (function(){
   "use strict";
-  /* ---- Contact form ----
-     No-backend default: opens the visitor's email app addressed to you.
-     To collect submissions on the site instead, create a free Formspree form
-     (https://formspree.io) and set USE_FORMSPREE = your endpoint URL below. */
-  var USE_FORMSPREE = "";            // e.g. "https://formspree.io/f/abcdwxyz"
+  /* ---- Contact form ---- */
+  var USE_FORMSPREE = "https://formspree.io/f/xgojzayq";
   var TO = "dlawhks@naver.com";
   var MAP_ADDRESS = "Gachon University, Seongnam, Republic of Korea";
 
@@ -116,24 +114,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         .catch(function(){ note.textContent='Could not send. Please email '+TO+' directly.'; note.style.color='#ffb4ab'; });
       return;
     }
-    /*
-    if(USE_FORMSPREE){
-      note.textContent='Sending??; note.style.color='';
-      fetch(USE_FORMSPREE,{ method:'POST', headers:{'Accept':'application/json'}, body:new FormData(f) })
-        .then(function(r){ if(r.ok){ form.reset(); note.textContent='Thanks ??your message has been sent.'; note.style.color='#93ccff'; } else { throw 0; } })
-        .catch(function(){ note.textContent='Could not send. Please email '+TO+' directly.'; note.style.color='#ffb4ab'; });
-      return;
-    }
-    // mailto fallback
-    var subject = 'Anamofit inquiry ??'+f.name.value.trim();
-    var body = 'Name: '+f.name.value.trim()+'\nEmail: '+f.email.value.trim()+'\nOrganization: '+(f.org.value.trim()||'-')+'\n\n'+f.message.value.trim();
-    window.location.href = 'mailto:'+TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-    note.textContent='Opening your email app??; note.style.color='#93ccff';
-    */
-    var subject = 'Anamofit inquiry - '+f.name.value.trim();
-    var body = 'Name: '+f.name.value.trim()+'\nEmail: '+f.email.value.trim()+'\nOrganization: '+(f.org.value.trim()||'-')+'\n\n'+f.message.value.trim();
-    window.location.href = 'mailto:'+TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-    note.textContent='Opening your email app...'; note.style.color='#93ccff';
+    note.textContent='Could not send. Please email '+TO+' directly.'; note.style.color='#ffb4ab';
   });
 
   /* reveal */
