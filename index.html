@@ -79,7 +79,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   .story-chapter.is-major .section-kicker .section-name,.story-chapter.is-major .story-eyebrow .section-name{ font-family:'Space Grotesk',sans-serif; font-size:clamp(4.6rem,9.6vw,8rem); line-height:.9; letter-spacing:0; text-transform:none; color:#fff; font-weight:700; }
   .story-chapter.is-major .story-chapter-title{ grid-column:1 / -1; margin-top:clamp(2.1rem,5vw,4.8rem); width:100%; max-width:none; font-size:clamp(1.9rem,3.25vw,3.8rem); line-height:1.08; }
   .story-chapter.is-major .story-chapter-copy{ grid-column:1 / -1; margin-top:clamp(1.15rem,2vw,1.8rem); width:100%; max-width:none; font-size:clamp(1.05rem,1.35vw,1.24rem); line-height:1.7; align-self:start; }
-  .story-section{ position:relative; min-height:1120svh; border-block:0; background:transparent; }
+  .story-section{ position:relative; min-height:700svh; border-block:0; background:transparent; }
   .story-stage{ position:sticky; top:var(--nav-h); min-height:calc(100svh - var(--nav-h)); overflow:hidden; display:grid; align-items:center; }
   .story-backdrop{ position:absolute; inset:0; z-index:0; overflow:hidden; background:radial-gradient(circle at 72% 46%, rgba(0,224,255,.08), transparent 34%); }
   .story-media{ position:absolute; top:calc((100svh - var(--nav-h) - min(71vh,720px))/2); right:max(clamp(24px,5vw,104px),calc((100vw - 1360px)/2 - 96px)); width:min(42vw,800px); height:min(71vh,720px); object-fit:cover; opacity:0; border-radius:22px; border:1px solid rgba(255,255,255,.12); box-shadow:0 34px 110px rgba(0,0,0,.52); transform:translateY(52vh) scale(.96); filter:saturate(.92) brightness(.62) blur(12px); transition:opacity .55s ease, transform .55s cubic-bezier(.16,1,.3,1), filter .55s ease; will-change:opacity,transform,filter; }
@@ -105,18 +105,18 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   /* scroll progress bar */
   #scroll-prog{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:55; background:linear-gradient(90deg,#00E0FF,#d97bff); box-shadow:0 0 12px rgba(0,224,255,.55); }
   /* tech storytelling */
-  .tech-story{ min-height:560svh; position:relative; }
+  .tech-story{ min-height:760svh; position:relative; }
   .tech-sticky{ position:sticky; top:var(--nav-h); min-height:calc(100svh - var(--nav-h)); display:flex; align-items:center; overflow:hidden; }
   .tech-sticky:before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 26% 35%, rgba(0,224,255,.14), transparent 30%), radial-gradient(circle at 80% 58%, rgba(217,123,255,.10), transparent 32%); pointer-events:none; }
   .tech-frame{ position:relative; width:min(1360px,calc(100% - clamp(48px,14vw,288px))); min-height:calc(100svh - var(--nav-h)); margin-inline:auto; padding:0; display:grid; grid-template-columns:minmax(0,min(29vw,480px)) minmax(0,min(42vw,800px)); justify-content:space-between; align-items:center; }
   .tech-visual{ grid-column:2; grid-row:1; justify-self:end; position:relative; width:min(42vw,800px); height:min(71vh,720px); min-height:0; margin-right:clamp(-96px,-5vw,-48px); overflow:visible; border:0; background:transparent; box-shadow:none; }
   .tech-visual:after{ display:none; }
-  .tech-copy{ grid-column:1; grid-row:1; position:relative; width:min(29vw,480px); min-height:470px; display:flex; flex-direction:column; justify-content:center; will-change:transform,filter,opacity; }
-  .tech-story.tech-composite-mode .tech-visual{ grid-column:1 / -1; justify-self:center; width:min(96vw,1680px); height:min(83vh,900px); margin-right:0; }
-  .tech-story.tech-composite-mode .tech-copy{ opacity:0!important; visibility:hidden; pointer-events:none; }
+  .tech-copy{ grid-column:1; grid-row:1; position:relative; width:min(29vw,550px); min-height:470px; display:flex; flex-direction:column; justify-content:center; will-change:transform,filter,opacity; }
+  .tech-story.tech-composite-mode .tech-visual,.tech-story.tech-media-only-mode .tech-visual{ grid-column:1 / -1; justify-self:center; width:min(96vw,1680px); height:min(83vh,900px); margin-right:0; }
+  .tech-story.tech-composite-mode .tech-copy,.tech-story.tech-media-only-mode .tech-copy{ opacity:0!important; visibility:hidden; pointer-events:none; }
   .tech-overline{ font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:#00E0FF; }
   .tech-number{ font-family:'Space Grotesk',sans-serif; font-size:clamp(3rem,7vw,6rem); font-weight:700; color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.28); line-height:1; }
-  .tech-step-wrap{ position:relative; min-height:330px; margin-top:1.25rem; }
+  .tech-step-wrap{ position:relative; min-height:600px; margin-top:1.25rem; }
   .ts-icon{ position:absolute; left:0; top:0; opacity:0; transform:translateY(12px); transition:opacity .45s ease, transform .45s ease; }
   .ts-icon.on{ opacity:1; transform:none; }
   .ts-step{ position:absolute; inset:0; opacity:0; transform:translateY(28px); transform-origin:left center; filter:blur(12px); transition:opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1), filter .55s cubic-bezier(.16,1,.3,1); pointer-events:none; will-change:opacity,transform,filter; }
@@ -149,7 +149,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     .story-chapter.is-major .story-chapter-title{ margin-top:2rem; font-size:clamp(1.55rem,7vw,2.65rem); line-height:1.12; max-width:100%; }
     .story-chapter-copy{ margin-top:1.25rem; font-size:1rem; }
     .story-chapter.is-major .story-chapter-copy{ margin-top:1.25rem; font-size:1.02rem; max-width:100%; }
-    .story-section{ min-height:1120svh; }
+    .story-section{ min-height:700svh; }
     .story-copy{ width:min(90vw,360px); min-height:100svh; padding:0; margin-left:5vw; margin-right:auto; align-items:flex-end; padding-bottom:10vh; }
     .story-media{ top:27vh; left:5vw; right:auto; width:90vw; height:42vh; border-radius:16px; }
     .story-panels,.story-panel,.story-panel h2,.story-panel p{ width:min(90vw,360px); max-width:min(90vw,360px); }
@@ -160,9 +160,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     .tech-frame{ width:100%; min-height:calc(100svh - var(--nav-h)); grid-template-columns:1fr; padding:10vh 5vw; gap:2rem; justify-content:stretch; }
     .tech-visual{ grid-column:auto; grid-row:auto; justify-self:stretch; width:100%; height:auto; min-height:280px; margin-right:0; border-radius:18px; }
     .ts-img{ border-radius:18px; }
-    .tech-story.tech-composite-mode .tech-visual{ grid-column:auto; width:100%; height:auto; min-height:0; aspect-ratio:1672/941; }
+    .tech-story.tech-composite-mode .tech-visual,.tech-story.tech-media-only-mode .tech-visual{ grid-column:auto; width:100%; height:auto; min-height:0; aspect-ratio:1672/941; }
     .tech-copy{ grid-column:auto; grid-row:auto; width:100%; min-height:360px; justify-content:flex-start; }
-    .tech-story{ min-height:580svh; }
+    .tech-story{ min-height:760svh; }
   }
   @media (max-width:480px){
     .site-nav{ justify-content:flex-start; }
@@ -256,15 +256,10 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   <div class="story-stage">
     <div class="story-backdrop" aria-hidden="true">
       <video class="story-media on" data-i="0" muted loop playsinline preload="metadata" poster="assets/reel/reel-tiger.jpg"><source src="assets/reel/reel-tiger.mp4" type="video/mp4"/></video>
-      <video class="story-media" data-i="1" muted loop playsinline preload="metadata" poster="assets/reel/reel-whale.jpg"><source src="assets/reel/reel-whale.mp4" type="video/mp4"/></video>
-      <video class="story-media" data-i="2" muted loop playsinline preload="metadata" poster="assets/reel/reel-sail.jpg"><source src="assets/reel/reel-sail.mp4" type="video/mp4"/></video>
-      <video class="story-media" data-i="3" muted loop playsinline preload="metadata" poster="assets/reel/reel-globe.jpg"><source src="assets/reel/reel-globe.mp4" type="video/mp4"/></video>
-      <img class="story-media" data-i="4" src="assets/gallery/building-red.jpg" alt="Architectural anamorphic facade"/>
-      <img class="story-media" data-i="5" src="assets/gallery/wall-maze.jpg" alt="Circular media wall with pattern"/>
-      <img class="story-media" data-i="6" src="assets/gallery/render-rabbit.jpg" alt="3D anamorphic asset render"/>
-      <img class="story-media" data-i="7" src="assets/gallery/fountain.jpg" alt="Outdoor media installation"/>
-      <img class="story-media" data-i="8" src="assets/gallery/building-night.jpg" alt="Night building projection"/>
-      <img class="story-media" data-i="9" src="assets/gallery/theater-color.jpg" alt="Immersive theater media wall"/>
+      <video class="story-media" data-i="1" muted loop playsinline preload="metadata" poster="assets/reel/reel-fountain.jpg"><source src="assets/reel/reel-fountain.mp4" type="video/mp4"/></video>
+      <img class="story-media" data-i="2" src="assets/gallery/render-rabbit.jpg" alt="AI generated 3D character for a circular media wall"/>
+      <img class="story-media" data-i="3" src="assets/gallery/fountain.jpg" alt="Non-rectangular media wall output prepared before installation"/>
+      <img class="story-media" data-i="4" src="assets/gallery/theater-color.jpg" alt="Immersive venue media wall format"/>
     </div>
     <div class="story-grid" aria-hidden="true"></div>
     <div class="story-scrim" aria-hidden="true"></div>
@@ -287,37 +282,12 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
           <div class="story-meta"><span>AI Creation</span><span>Site Model</span><span>Content Fit</span></div>
         </article>
         <article class="story-panel" data-i="3">
-          <h2>Anamorphic design is checked early.</h2>
-          <p>The composition can be reviewed against a modeled display before delivery, helping teams verify depth, perspective, and readability before venue playback.</p>
-          <div class="story-meta"><span>3D Preview</span><span>Distortion</span><span>Readability</span></div>
-        </article>
-        <article class="story-panel" data-i="4">
-          <h2>Irregular screens become reusable inputs.</h2>
-          <p>Once a wall is defined, its geometry can guide future concepts instead of restarting from scratch for every new piece of content.</p>
-          <div class="story-meta"><span>Media Wall Data</span><span>Reuse</span><span>Iteration</span></div>
-        </article>
-        <article class="story-panel" data-i="5">
           <h2>The process lowers production friction.</h2>
           <p>Anamofit brings planning, creative generation, correction, and output closer together so small teams can move from concept to testable content faster.</p>
           <div class="story-meta"><span>Integrated Tools</span><span>Faster Iteration</span><span>Team Flow</span></div>
         </article>
-        <article class="story-panel" data-i="6">
-          <h2>Creative choices stay tied to playback.</h2>
-          <p>Design decisions are evaluated by how they will appear on the actual display: scale, motion, contrast, and perspective remain connected to final playback.</p>
-          <div class="story-meta"><span>Playback-aware</span><span>Scale</span><span>Motion</span></div>
-        </article>
-        <article class="story-panel" data-i="7">
-          <h2>Venue information shapes the result.</h2>
-          <p>Installation references, audience position, and environmental context help guide the scene before it becomes a final output file.</p>
-          <div class="story-meta"><span>Venue Context</span><span>Audience View</span><span>Calibration</span></div>
-        </article>
-        <article class="story-panel" data-i="8">
-          <h2>Corrections happen before the last mile.</h2>
-          <p>Distortion and perspective checks can be handled in the production stage, reducing reliance on expensive late-stage trial and error.</p>
-          <div class="story-meta"><span>Correction</span><span>QA</span><span>Delivery</span></div>
-        </article>
-        <article class="story-panel" data-i="9">
-          <h2>Anamofit scales across projects.</h2>
+        <article class="story-panel" data-i="4">
+          <h2>The workflow scales across projects.</h2>
           <p>The same workflow can support cultural venues, exhibitions, tourism sites, public media walls, and commercial displays without treating each project as a one-off rebuild.</p>
           <div class="story-meta"><span>Cultural Venues</span><span>Exhibitions</span><span>Commercial</span></div>
         </article>
@@ -325,7 +295,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     </div>
 
     <div class="story-status" aria-hidden="true">
-      <div class="story-num">01/10</div>
+      <div class="story-num">01/05</div>
       <div class="story-rail"><div class="story-fill"></div></div>
       <div class="story-label">Scroll to compose</div>
     </div>
@@ -356,15 +326,18 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     </div>
   </div>
 
-  <div class="tech-story tech-composite-mode" data-cursor-label="Technology">
+  <div class="tech-story" data-cursor-label="Technology">
     <div class="tech-sticky">
       <div class="tech-frame">
         <div class="tech-visual reveal">
-          <div class="ts-img tech-composite on" data-i="0" aria-label="Anamofit creation workflow over media wall background">
+          <img class="ts-img on" data-i="0" src="assets/gallery/wall-maze.jpg" alt="Circular media wall geometry reused as a production input"/>
+          <img class="ts-img" data-i="1" src="assets/gallery/building-night.jpg" alt="Anamorphic media wall previewed on a tall urban display"/>
+          <img class="ts-img" data-i="2" src="assets/gallery/building-red.jpg" alt="Irregular architectural media wall prepared for final correction"/>
+          <div class="ts-img tech-composite tech-media-only" data-i="3" aria-label="Anamofit creation workflow over media wall background">
             <img class="tech-composite-bg" src="assets/resource/Technologoy_1_background.png" alt=""/>
             <img class="tech-composite-component" src="assets/resource/Technologoy_1_component.png" alt=""/>
           </div>
-          <div class="ts-img tech-composite" data-i="1" aria-label="Three AI engines behind the experience over media wall background">
+          <div class="ts-img tech-composite tech-media-only" data-i="4" aria-label="Three AI engines behind the experience over media wall background">
             <img class="tech-composite-bg" src="assets/resource/Technologoy_2_background.png" alt=""/>
             <img class="tech-composite-component" src="assets/generated/technology_2_component_overlay.png" alt=""/>
           </div>
@@ -372,16 +345,31 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         <div class="tech-copy reveal d1">
           <div class="flex items-end gap-5">
             <div class="tech-number ts-num">01</div>
-            <div class="tech-overline">Adaptive production stack</div>
+            <div class="tech-overline">Reusable media-wall data</div>
           </div>
           <div class="tech-step-wrap">
-            <article class="ts-step on" data-i="0" aria-hidden="true"></article>
-            <article class="ts-step" data-i="1" aria-hidden="true"></article>
+            <article class="ts-step on" data-i="0" data-overline="Reusable media-wall data">
+              <h3>Irregular screens become reusable inputs.</h3>
+              <p>Once a wall is defined, its geometry can guide future concepts instead of restarting from scratch for every new piece of content.</p>
+              <div class="story-meta"><span>Media Wall Data</span><span>Reuse</span><span>Iteration</span></div>
+            </article>
+            <article class="ts-step" data-i="1" data-overline="Early preview and verification">
+              <h3>Anamorphic design is checked early.</h3>
+              <p>The composition can be reviewed against a modeled display before delivery, helping teams verify depth, perspective, and readability before venue playback.</p>
+              <div class="story-meta"><span>3D Preview</span><span>Distortion</span><span>Readability</span></div>
+            </article>
+            <article class="ts-step" data-i="2" data-overline="Pre-delivery correction">
+              <h3>Corrections happen before the last mile.</h3>
+              <p>Distortion and perspective checks can be handled in the production stage, reducing reliance on expensive late-stage trial and error.</p>
+              <div class="story-meta"><span>Correction</span><span>QA</span><span>Delivery</span></div>
+            </article>
+            <article class="ts-step" data-i="3" aria-hidden="true"></article>
+            <article class="ts-step" data-i="4" aria-hidden="true"></article>
           </div>
         </div>
       </div>
       <div class="story-status tech-status" aria-hidden="true">
-        <div class="story-num">01/02</div>
+        <div class="story-num">01/05</div>
         <div class="story-rail"><div class="story-fill"></div></div>
         <div class="story-label">Scroll to compose</div>
       </div>
@@ -985,94 +973,70 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   var story=document.querySelector('.tech-story');
   if(story){
     var imgs=story.querySelectorAll('.ts-img'), stepsEl=story.querySelectorAll('.ts-step'), dots=story.querySelectorAll('.ts-dot');
-    var steps=stepsEl.length, num=story.querySelector('.ts-num'), last=-1,
-        techChrome=story.querySelector('.tech-copy > .flex'), techProgressNum=story.querySelector('.tech-status .story-num'),
+    var steps=imgs.length, num=story.querySelector('.ts-num'), last=-1,
+        techChrome=story.querySelector('.tech-copy > .flex'), techOverline=story.querySelector('.tech-overline'), techProgressNum=story.querySelector('.tech-status .story-num'),
         techFill=story.querySelector('.tech-status .story-fill'), techComposites=story.querySelectorAll('.tech-composite');
-    function techIndexFromFocus(focus,count){
-      if(count>1 && focus<0.76) return 0;
-      return indexFromFocus(focus,count);
-    }
-    function updateTechComposites(focus){
+    function updateTechComponents(focus){
       function ease(t){ return t*t*(3-2*t); }
-      var exitStart=0.56, exitEnd=0.70, enterStart=0.64, enterEnd=0.80;
       techComposites.forEach(function(card,idx){
         var n=Number(card.dataset.i);
         if(!Number.isFinite(n)) n=idx;
-        var exit=0, enter=0, cardOpacity=0, cardX=0, cardY=0, cardScale=1, cardBlur=0;
-        if(n===0){
-          exit=ease(clamp((focus-exitStart)/(exitEnd-exitStart),0,1));
-          cardOpacity=1-exit;
-          cardX=exit*window.innerWidth*0.20;
-          cardY=-exit*window.innerHeight*0.72;
-          cardScale=1-exit*0.035;
-          cardBlur=exit*12;
-        } else if(n===1){
-          enter=ease(clamp((focus-enterStart)/(enterEnd-enterStart),0,1));
-          cardOpacity=enter;
-          cardX=0;
-          cardY=(1-enter)*window.innerHeight*0.72;
-          cardScale=0.965+enter*0.035;
-          cardBlur=(1-enter)*8;
-        } else {
-          cardOpacity=0;
-          cardY=window.innerHeight*0.72;
-          cardScale=0.965;
-          cardBlur=8;
-        }
-        card.style.opacity=cardOpacity.toFixed(3);
-        card.style.transform='translate3d('+cardX.toFixed(1)+'px,'+cardY.toFixed(1)+'px,0) scale('+cardScale.toFixed(4)+')';
-        card.style.filter=cardBlur>0.1?'blur('+cardBlur.toFixed(2)+'px)':'none';
-        card.style.visibility=cardOpacity>0.012?'visible':'hidden';
-        card.style.zIndex=String(n===0?82:84);
-
+        var delta=n-focus, abs=Math.abs(delta);
         var comp=card.querySelector('.tech-composite-component');
         if(!comp) return;
-        var appear=0, compExit=0, fadeOut=0, compOpacity=0, compX=0, compY=0, compScale=1, compBlur=0;
-        if(n===0){
-          appear=ease(clamp(focus/0.24,0,1));
-          compExit=ease(clamp((focus-0.54)/0.14,0,1));
-          fadeOut=ease(clamp((focus-0.58)/0.1,0,1));
-          compOpacity=clamp(appear*(1-fadeOut),0,1);
-          compX=(1-appear)*-window.innerWidth*0.18 + compExit*window.innerWidth*0.18;
-          compY=-compExit*window.innerHeight*0.18;
-          compScale=0.985 + appear*0.015 - compExit*0.035;
-          compBlur=(1-appear)*10 + compExit*14;
-        } else if(n===1){
-          appear=ease(clamp((focus-0.70)/0.10,0,1));
-          compOpacity=appear;
-          compX=(1-appear)*-window.innerWidth*0.18;
-          compY=0;
-          compScale=0.985 + appear*0.015;
-          compBlur=(1-appear)*10;
-        } else {
-          compOpacity=0;
-          compX=-window.innerWidth*0.18;
-          compY=0;
-          compScale=0.985;
-          compBlur=10;
-        }
+        var appear=ease(clamp((0.82-abs)/0.82,0,1));
+        var exit=ease(clamp(-delta/0.62,0,1));
+        var compOpacity=clamp(appear*(1-exit*.85),0,1);
+        var compX=(1-appear)*-window.innerWidth*0.18 + exit*window.innerWidth*0.16;
+        var compY=-exit*window.innerHeight*0.16;
+        var compScale=0.985 + appear*0.015 - exit*0.035;
+        var compBlur=(1-appear)*10 + exit*12;
         comp.style.opacity=compOpacity.toFixed(3);
         comp.style.transform='translate3d('+compX.toFixed(1)+'px,'+compY.toFixed(1)+'px,0) scale('+compScale.toFixed(4)+')';
         comp.style.filter='drop-shadow(0 22px 44px rgba(0,0,0,.36))'+(compBlur>0.15?' blur('+compBlur.toFixed(2)+'px)':'');
         comp.style.visibility=compOpacity>0.012?'visible':'hidden';
       });
     }
+    function placeTechMedia(nodes, focus){
+      nodes.forEach(function(el,idx){
+        var n=Number(el.dataset.i);
+        if(!Number.isFinite(n)) n=idx;
+        var delta=n-focus, abs=Math.abs(delta), isComposite=el.classList.contains('tech-composite');
+        var opacity=1-clamp((abs-0.42)/0.78,0,1);
+        var exit=delta<0?clamp(-delta,0,1.35):0;
+        var y=delta*window.innerHeight*(isComposite?0.76:0.82);
+        var x=isComposite ? exit*window.innerWidth*0.18 : 0;
+        var scale=1-Math.min(abs*(isComposite?0.035:0.03),0.08);
+        var blur=Math.min(abs*(isComposite?8:2.8), isComposite?12:3.2);
+        el.style.opacity=opacity.toFixed(3);
+        el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) scale('+scale.toFixed(4)+')';
+        el.style.filter=blur>0.12?'blur('+blur.toFixed(2)+'px)':'none';
+        el.style.visibility=opacity>0.012?'visible':'hidden';
+        el.style.zIndex=String(80-Math.round(abs*10));
+      });
+      updateTechComponents(focus);
+    }
     function setA(i){ if(i===last) return; last=i;
-      story.classList.add('tech-composite-mode');
+      var activeMedia=imgs[i], mediaOnly=!!(activeMedia && activeMedia.classList.contains('tech-media-only'));
+      story.classList.toggle('tech-media-only-mode', mediaOnly);
+      story.classList.remove('tech-composite-mode');
       if(num) num.textContent='0'+(i+1);
+      if(techOverline){
+        var activeStep=stepsEl[i];
+        techOverline.textContent=(activeStep && activeStep.dataset.overline) || 'Adaptive production stack';
+      }
       if(techProgressNum) techProgressNum.textContent=('0'+(i+1)).slice(-2)+'/'+('0'+steps).slice(-2);
       imgs.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
       stepsEl.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
       dots.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
     }
     function upd(){ var vh=window.innerHeight, top=story.getBoundingClientRect().top, total=story.offsetHeight-vh;
-      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.035,endHold:0.06}), i=indexFromFocus(focus,steps);
-      i=techIndexFromFocus(focus,steps);
+      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.08,endHold:0.12}), i=indexFromFocus(focus,steps);
       setA(i);
       if(techFill) techFill.style.width=(p*100).toFixed(2)+'%';
-      placeDeck(stepsEl, focus, {side:'left', vh:0.82, blur:13, scale:0.032, fadeStart:0.7, fadeEnd:1.5, throwVw:0.18, incomingVw:0.065});
+      placeDeck(stepsEl, focus, {side:'left', vh:0.82, blur:6, incomingBlur:5, scale:0.032, fadeStart:0.7, fadeEnd:1.5, throwVw:0.18, incomingVw:0.065});
       placeChrome([techChrome], focus, i, {side:'left', vh:0.18, throwVw:0.075});
-      updateTechComposites(focus);
+      placeTechMedia(imgs, focus);
     }
     window.addEventListener('scroll', upd, {passive:true}); window.addEventListener('resize', upd); upd();
     (function techLoop(){ upd(); requestAnimationFrame(techLoop); })();

@@ -43,6 +43,19 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
 
   <section class="px-6 py-20 md:py-24">
     <div class="max-w-7xl mx-auto flex flex-col gap-10 lg:gap-12">
+      <section class="team-section reveal glass rounded-2xl" aria-labelledby="team-title">
+        <div class="team-header">
+          <div>
+            <div class="team-eyebrow">Partners</div>
+            <!--<h2 id="team-title" class="team-title">Production Team</h2>-->
+          </div>
+          <div class="team-source">Managed by contact/contact_members.csv</div>
+        </div>
+        <div id="team-groups" class="team-groups">
+          <div class="team-message">Loading team contents...</div>
+        </div>
+      </section>
+
       <div class="reveal d1 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/25 min-h-[520px] md:min-h-[620px] shadow-[0_34px_110px_rgba(0,0,0,.45)]">
         <iframe id="contact-map" class="block h-full min-h-[520px] w-full md:min-h-[620px]" title="Google map showing Gachon University" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
@@ -93,11 +106,206 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   var USE_FORMSPREE = "https://formspree.io/f/xgojzayq";
   var TO = "dlawhks@naver.com";
   var MAP_ADDRESS = "Gachon University, Seongnam, Republic of Korea";
+  var TEAM_FILE = "contact_members.csv";
+  var DEFAULT_PROFILE_IMAGE = "contact/default_profile.png";
+  var TEAM_GROUPS = [
+    { key:"company", label:"COMPANY", sub:"Company", aliases:["company","corp","studio"] },
+    { key:"univ", label:"UNIV - PROFESSOR", sub:"University Faculty", aliases:["univ","university","professor","faculty"] },
+    { key:"students", label:"STUDENTS", sub:"Student Team", aliases:["students","student","researcher","research","lab"] }
+  ];
+
+  function escapeHTML(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+
+  function unique(list){
+    var seen = {};
+    return list.filter(function(url){
+      if(seen[url]) return false;
+      seen[url] = true;
+      return true;
+    });
+  }
+
+  function decodeCSVBuffer(buffer){
+    if(!buffer) return '';
+    var bytes = new Uint8Array(buffer);
+    var encoding = 'utf-8';
+    if(bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) encoding = 'utf-16le';
+    else if(bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) encoding = 'utf-16be';
+    try { return new TextDecoder(encoding).decode(buffer); }
+    catch(err){ return new TextDecoder('utf-8').decode(buffer); }
+  }
+
+  function parseCSVRows(text){
+    text = String(text || '').replace(/^\uFEFF/, '').replace(/\u0000/g, '');
+    var rows = [], row = [], field = '', quoted = false;
+    for(var i=0;i<text.length;i++){
+      var ch = text[i], next = text[i+1];
+      if(quoted){
+        if(ch === '"' && next === '"'){ field += '"'; i++; }
+        else if(ch === '"'){ quoted = false; }
+        else { field += ch; }
+      } else if(ch === '"'){
+        quoted = true;
+      } else if(ch === ','){
+        row.push(field); field = '';
+      } else if(ch === '\n'){
+        row.push(field); rows.push(row); row = []; field = '';
+      } else if(ch !== '\r'){
+        field += ch;
+      }
+    }
+    if(field || row.length){ row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function parseTeamCSV(text){
+    var rows = parseCSVRows(text);
+    if(!rows.length) return [];
+    var headers = rows.shift().map(function(h){ return h.trim().toLowerCase(); });
+    return rows.filter(function(row){ return row.some(function(v){ return String(v).trim(); }); }).map(function(row){
+      if(row.length > headers.length){
+        row[headers.length - 1] = row.slice(headers.length - 1).join(',');
+        row.length = headers.length;
+      }
+      var item = {};
+      headers.forEach(function(h, idx){ item[h] = (row[idx] || '').trim(); });
+      return normalizeTeamMember(item);
+    }).filter(Boolean);
+  }
+
+  function groupKey(value){
+    var raw = String(value || '').trim().toLowerCase();
+    for(var i=0;i<TEAM_GROUPS.length;i++){
+      if(TEAM_GROUPS[i].aliases.indexOf(raw) >= 0 || TEAM_GROUPS[i].key === raw) return TEAM_GROUPS[i].key;
+    }
+    return raw || 'company';
+  }
+
+  function parseLocation(value){
+    var parts = String(value || '0,0').split(/[,\s/]+/).filter(Boolean);
+    var row = Math.max(0, Math.min(3, parseInt(parts[0] || '0', 10) || 0));
+    var col = Math.max(0, Math.min(3, parseInt(parts[1] || '0', 10) || 0));
+    return { row:row, col:col };
+  }
+
+  function normalizeTeamMember(item){
+    var group = item.group || item.affiliation || item.type;
+    var ko = item.name_ko || item.ko || item.name || '';
+    var en = item.name_en || item.en || '';
+    var image = item.image || item.img || item.path || DEFAULT_PROFILE_IMAGE;
+    var location = item.location || item['위치'] || '0,0';
+    if(!ko && !en) return null;
+    return { group:groupKey(group), ko:ko, en:en, image:image, location:parseLocation(location) };
+  }
+
+  function teamCSVURLs(){
+    var href = window.location.href;
+    return unique([
+      new URL('contact/' + TEAM_FILE, href).href,
+      new URL('./contact/' + TEAM_FILE, href).href,
+      new URL(TEAM_FILE, new URL('contact/', href)).href
+    ]);
+  }
+
+  function requestText(url){
+    var target = url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + Date.now();
+    return fetch(target, { cache:'no-store' })
+      .then(function(res){
+        if(!res.ok) throw new Error('Team CSV request failed: ' + res.status + ' ' + url);
+        return res.arrayBuffer();
+      })
+      .then(decodeCSVBuffer);
+  }
+
+  function loadTeamFromURLs(urls, index){
+    var url = urls[index];
+    if(!url) return Promise.reject(new Error('No team CSV URL matched.'));
+    return requestText(url).then(function(text){
+      var members = parseTeamCSV(text);
+      if(!members.length) throw new Error('Team CSV loaded but no members parsed.');
+      return members;
+    }).catch(function(err){
+      console.warn(err);
+      return loadTeamFromURLs(urls, index + 1);
+    });
+  }
+
+  function initials(member){
+    var name = member.en || member.ko || '';
+    var words = name.replace(/[^a-zA-Z가-힣0-9 ]/g, ' ').trim().split(/\s+/).filter(Boolean);
+    if(!words.length) return 'A';
+    if(words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  function memberCard(member){
+    var image = escapeHTML(member.image);
+    var img = image ? '<img data-team-image src="'+image+'" alt="'+escapeHTML(member.ko || member.en)+'" loading="lazy">' : '';
+    return '<article class="team-card">'+
+      '<div class="team-photo">'+
+        '<div class="team-fallback">'+escapeHTML(initials(member))+'</div>'+
+        img+
+      '</div>'+
+      '<div class="team-info">'+
+        '<div class="team-name-ko">'+escapeHTML(member.ko)+'</div>'+
+        '<div class="team-name-en">'+escapeHTML(member.en)+'</div>'+
+      '</div>'+
+    '</article>';
+  }
+
+  function renderTeam(members){
+    var root = document.getElementById('team-groups');
+    if(!root) return;
+    root.innerHTML = '';
+    TEAM_GROUPS.forEach(function(group){
+      var groupMembers = members.filter(function(member){ return member.group === group.key; });
+      if(!groupMembers.length) return;
+      var maxRow = groupMembers.reduce(function(max, member){ return Math.max(max, member.location.row); }, 0);
+      var slots = {};
+      groupMembers.forEach(function(member){ slots[member.location.row + '-' + member.location.col] = member; });
+      var html = '<section class="team-group">'+
+        '<div class="team-group-head"><span class="team-group-label">'+escapeHTML(group.sub)+'</span><span class="team-group-name">'+escapeHTML(group.label)+'</span></div>'+
+        '<div class="team-grid">';
+      for(var row=0; row<=maxRow; row++){
+        for(var col=0; col<4; col++){
+          var member = slots[row + '-' + col];
+          html += '<div class="team-slot'+(member ? '' : ' empty')+'">'+(member ? memberCard(member) : '')+'</div>';
+        }
+      }
+      html += '</div></section>';
+      root.insertAdjacentHTML('beforeend', html);
+    });
+    if(!root.children.length) root.innerHTML = '<div class="team-message">No team contents found.</div>';
+    root.querySelectorAll('[data-team-image]').forEach(function(img){
+      img.addEventListener('error', function(){
+        if(img.dataset.defaultApplied === '1'){
+          img.style.display = 'none';
+          return;
+        }
+        img.dataset.defaultApplied = '1';
+        img.src = DEFAULT_PROFILE_IMAGE;
+      });
+    });
+  }
+
+  function loadTeam(){
+    var root = document.getElementById('team-groups');
+    if(!root) return;
+    loadTeamFromURLs(teamCSVURLs(), 0).then(renderTeam).catch(function(err){
+      console.error(err);
+      root.innerHTML = '<div class="team-message">Team contents could not be loaded. Please check contact/contact_members.csv.</div>';
+    });
+  }
 
   var map = document.getElementById('contact-map');
   if(map){
     map.src = 'https://www.google.com/maps?q=' + encodeURIComponent(MAP_ADDRESS) + '&output=embed';
   }
+  loadTeam();
 
   var form = document.getElementById('contact-form');
   var note = document.getElementById('form-note');

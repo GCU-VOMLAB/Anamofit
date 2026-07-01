@@ -1,4 +1,2 @@
-date,cat,title,body
-2026-06-20,award,test,test
-2026-05-12,news,test,test
-2026-04-30,notice,test,test
+date,cat,title,body,media
+2026-07-01,notice,Anamofit Demo Open,Anamofit demo is now open. Visitors can preview the media-wall experience directly from this board notice.,assets/banner.mp4
