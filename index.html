@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<link rel="preload" as="video" href="assets/reel/circle_screen_sequence.mp4" type="video/mp4"/>
 <script>
 tailwind.config = { darkMode:"class", theme:{ extend:{
   colors:{ "cyber-cyan":"#00E0FF","primary":"#93ccff","primary-container":"#00aaff","tertiary":"#ecb2ff","tertiary-container":"#d97bff","on-surface":"#e5e2e1","on-surface-variant":"#bec7d3","void-surface":"#121218","deep-navy":"#050516","text-silver":"#E0E0E0" },
@@ -264,9 +265,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   </div>
   <div class="story-stage">
     <div class="story-backdrop" aria-hidden="true">
-      <video class="story-media on" data-i="0" muted loop playsinline preload="metadata" poster="assets/reel/reel-tiger.jpg"><source src="assets/reel/reel-tiger.mp4" type="video/mp4"/></video>
-      <video class="story-media" data-i="1" muted loop playsinline preload="metadata" poster="assets/reel/reel-fountain.jpg"><source src="assets/reel/reel-fountain.mp4" type="video/mp4"/></video>
-      <video class="story-media" data-i="2" muted loop playsinline preload="metadata" aria-label="Circular screen workflow sequence"><source src="assets/reel/circle_screen_sequence.mp4" type="video/mp4"/></video>
+      <video class="story-media on" data-i="0" muted loop playsinline preload="auto" poster="assets/reel/reel-tiger.jpg"><source src="assets/reel/reel-tiger.mp4" type="video/mp4"/></video>
+      <video class="story-media" data-i="1" muted loop playsinline preload="auto" poster="assets/reel/reel-fountain.jpg"><source src="assets/reel/reel-fountain.mp4" type="video/mp4"/></video>
+      <video class="story-media" data-i="2" muted loop playsinline preload="auto" aria-label="Circular screen workflow sequence"><source src="assets/reel/circle_screen_sequence.mp4" type="video/mp4"/></video>
       <img class="story-media" data-i="3" src="assets/gallery/theater-color.jpg" alt="Immersive venue media wall format"/>
     </div>
     <div class="story-grid" aria-hidden="true"></div>
@@ -927,13 +928,23 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         reelMedia=reel.querySelectorAll('.story-media'), reelPanels=reel.querySelectorAll('.story-panel'),
         reelNum=reel.querySelector('.story-num'), reelFill=reel.querySelector('.story-fill'),
         reelLast=-1, reelInViewLast=false;
+    function warmStoryVideos(){
+      reelMedia.forEach(function(v){
+        if(!v || v.tagName !== 'VIDEO' || v.dataset.warmed === '1') return;
+        v.dataset.warmed='1';
+        v.preload='auto';
+        try{ v.load(); }catch(e){}
+      });
+    }
     function playStoryVideo(active, inView, focus){
       reelMedia.forEach(function(v,idx){
         if(!v || v.tagName !== 'VIDEO') return;
-        var near = Math.abs(idx-focus)<1.08;
+        var near = Math.abs(idx-focus)<1.55;
         if((idx===active || near) && inView){
           if(v.preload!=='auto'){ v.preload='auto'; v.load(); }
-          var p=v.play(); if(p&&p.catch) p.catch(function(){});
+          if(v.paused){
+            var p=v.play(); if(p&&p.catch) p.catch(function(){});
+          }
         } else {
           v.pause();
         }
@@ -950,10 +961,8 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       if(reelFill) reelFill.style.width=(p*100).toFixed(2)+'%';
       placeDeck(reelPanels, focus, {side:'left', vh:0.9, blur:4.5, incomingBlur:4.5, scale:0.032, fadeStart:0.95, fadeEnd:1.36, throwVw:0.22, incomingVw:0.075});
       placeVisualDeck(reelMedia, focus, {vh:0.88, blur:2.5, scale:0.026, fadeStart:0.58, fadeEnd:0.98});
-      if(changed || inView!==reelInViewLast){
-        playStoryVideo(i, inView, focus);
-        reelInViewLast=inView;
-      }
+      playStoryVideo(i, inView, focus);
+      reelInViewLast=inView;
     }
     // Scroll-invariant values (nav height, section heights) are cached and refreshed
     // only on resize — they were previously re-read (getComputedStyle/offsetHeight) every frame.
@@ -977,6 +986,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     }
     window.addEventListener('scroll', function(){ updateReel(); }, {passive:true});
     window.addEventListener('resize', function(){ measureReel(); updateReel(true); });
+    warmStoryVideos();
     measureReel(); updateReel(true);
     (function reelLoop(){
       if(document.hidden){ reelRunning=false; return; }
@@ -986,6 +996,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     document.addEventListener('visibilitychange', function(){
       if(!document.hidden && !reelRunning){ reelRunning=true; measureReel(); updateReel(true); requestAnimationFrame(reelLoop); }
     });
+    setTimeout(warmStoryVideos, 700);
     setTimeout(function(){ measureReel(); updateReel(true); }, 450);
     setTimeout(function(){ measureReel(); updateReel(true); }, 1200);
   }
