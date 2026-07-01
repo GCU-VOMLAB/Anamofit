@@ -272,9 +272,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
           <div class="story-meta"><span>Screen Setup</span><span>Geometry</span><span>Viewing Condition</span></div>
         </article>
         <article class="story-panel" data-i="1">
-          <h2>One workflow replaces fragmented handoffs.</h2>
-          <p>Screen setup, asset generation, preview, distortion correction, and final output stay connected in one production flow, reducing tool switching and late manual fixes.</p>
-          <div class="story-meta"><span>Workflow</span><span>Preview</span><span>Output</span></div>
+          <h2>One interface connects every production step.</h2>
+          <p>The UI follows the actual production sequence: screen setup, media wall modeling, prompt-based asset and background generation, preview, correction, and final output.</p>
+          <div class="story-meta"><span>Shared Interface</span><span>Production Flow</span><span>Final Output</span></div>
         </article>
         <article class="story-panel" data-i="2">
           <h2>AI supports site-specific creation.</h2>
@@ -282,9 +282,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
           <div class="story-meta"><span>AI Creation</span><span>Site Model</span><span>Content Fit</span></div>
         </article>
         <article class="story-panel" data-i="3">
-          <h2>The process lowers production friction.</h2>
-          <p>Anamofit brings planning, creative generation, correction, and output closer together so small teams can move from concept to testable content faster.</p>
-          <div class="story-meta"><span>Integrated Tools</span><span>Faster Iteration</span><span>Team Flow</span></div>
+          <h2>Guided steps reduce trial and error.</h2>
+          <p>Each step shows what input is required, what result is generated, and how the content is being adapted to the target display, helping teams reduce repeated testing and late-stage fixes.</p>
+          <div class="story-meta"><span>Guided Workflow</span><span>Visual Inspection</span><span>Output Optimization</span></div>
         </article>
         <article class="story-panel" data-i="4">
           <h2>The workflow scales across projects.</h2>
@@ -330,8 +330,8 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     <div class="tech-sticky">
       <div class="tech-frame">
         <div class="tech-visual reveal">
-          <img class="ts-img on" data-i="0" src="assets/gallery/wall-maze.jpg" alt="Circular media wall geometry reused as a production input"/>
-          <img class="ts-img" data-i="1" src="assets/gallery/building-night.jpg" alt="Anamorphic media wall previewed on a tall urban display"/>
+          <video class="ts-img on" data-i="0" muted loop playsinline preload="metadata" poster="assets/reel/reel-bluewhale.jpg" aria-label="Blue whale anamorphic media wall preview"><source src="assets/reel/reel-bluewhale.mp4" type="video/mp4"/></video>
+          <video class="ts-img" data-i="1" muted loop playsinline preload="metadata" poster="assets/reel/reel-orb.jpg" aria-label="Orb anamorphic media wall preview"><source src="assets/reel/reel-orb.mp4" type="video/mp4"/></video>
           <img class="ts-img" data-i="2" src="assets/gallery/building-red.jpg" alt="Irregular architectural media wall prepared for final correction"/>
           <div class="ts-img tech-composite tech-media-only" data-i="3" aria-label="Anamofit creation workflow over media wall background">
             <img class="tech-composite-bg" src="assets/resource/Technologoy_1_background.png" alt=""/>
@@ -345,23 +345,23 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         <div class="tech-copy reveal d1">
           <div class="flex items-end gap-5">
             <div class="tech-number ts-num">01</div>
-            <div class="tech-overline">Reusable media-wall data</div>
+            <div class="tech-overline">Display geometry as input</div>
           </div>
           <div class="tech-step-wrap">
-            <article class="ts-step on" data-i="0" data-overline="Reusable media-wall data">
-              <h3>Irregular screens become reusable inputs.</h3>
-              <p>Once a wall is defined, its geometry can guide future concepts instead of restarting from scratch for every new piece of content.</p>
-              <div class="story-meta"><span>Media Wall Data</span><span>Reuse</span><span>Iteration</span></div>
+            <article class="ts-step on" data-i="0" data-overline="Display geometry as input">
+              <h3>Screen geometry leads the workflow.</h3>
+              <p>Instead of generating content first and fitting it to a screen later, Anamofit uses the display's geometry as an input from the beginning. It integrates irregular display adaptation and automated 3D anamorphic content generation into one workflow.</p>
+              <div class="story-meta"><span>Display Geometry</span><span>Irregular Adaptation</span><span>3D Generation</span></div>
             </article>
-            <article class="ts-step" data-i="1" data-overline="Early preview and verification">
-              <h3>Anamorphic design is checked early.</h3>
-              <p>The composition can be reviewed against a modeled display before delivery, helping teams verify depth, perspective, and readability before venue playback.</p>
-              <div class="story-meta"><span>3D Preview</span><span>Distortion</span><span>Readability</span></div>
+            <article class="ts-step" data-i="1" data-overline="Metadata-based media wall modeling">
+              <h3>The target display becomes a 3D model.</h3>
+              <p>Anamofit reconstructs a 3D mesh of the target media wall from display metadata, roadmap images, satellite images, and installation references, then recommends effective viewpoints for anamorphic production.</p>
+              <div class="story-meta"><span>3D Mesh</span><span>Display Metadata</span><span>Viewpoint</span></div>
             </article>
-            <article class="ts-step" data-i="2" data-overline="Pre-delivery correction">
-              <h3>Corrections happen before the last mile.</h3>
-              <p>Distortion and perspective checks can be handled in the production stage, reducing reliance on expensive late-stage trial and error.</p>
-              <div class="story-meta"><span>Correction</span><span>QA</span><span>Delivery</span></div>
+            <article class="ts-step" data-i="2" data-overline="Multimodal generation and correction">
+              <h3>Assets and backgrounds are corrected in one flow.</h3>
+              <p>Text prompts, character images, and video references generate production-ready 3D assets, animation instructions, and display-optimized backgrounds while inpainting, distortion correction, and resolution enhancement prepare the final output.</p>
+              <div class="story-meta"><span>3D Assets</span><span>Inpainting</span><span>Resolution</span></div>
             </article>
             <article class="ts-step" data-i="3" aria-hidden="true"></article>
             <article class="ts-step" data-i="4" aria-hidden="true"></article>
@@ -1016,6 +1016,20 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       });
       updateTechComponents(focus);
     }
+    function playTechVideo(active, inView, focus){
+      imgs.forEach(function(v,idx){
+        if(!v || v.tagName !== 'VIDEO') return;
+        var near=Math.abs(idx-focus)<1.08;
+        if((idx===active || near) && inView){
+          if(v.preload!=='auto'){ v.preload='auto'; v.load(); }
+          if(v.paused){
+            var p=v.play(); if(p&&p.catch) p.catch(function(){});
+          }
+        } else {
+          v.pause();
+        }
+      });
+    }
     function setA(i){ if(i===last) return; last=i;
       var activeMedia=imgs[i], mediaOnly=!!(activeMedia && activeMedia.classList.contains('tech-media-only'));
       story.classList.toggle('tech-media-only-mode', mediaOnly);
@@ -1031,12 +1045,13 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       dots.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
     }
     function upd(){ var vh=window.innerHeight, top=story.getBoundingClientRect().top, total=story.offsetHeight-vh;
-      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.08,endHold:0.12}), i=indexFromFocus(focus,steps);
+      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.08,endHold:0.12}), i=indexFromFocus(focus,steps), inView=top<vh && top+story.offsetHeight>0;
       setA(i);
       if(techFill) techFill.style.width=(p*100).toFixed(2)+'%';
       placeDeck(stepsEl, focus, {side:'left', vh:0.82, blur:6, incomingBlur:5, scale:0.032, fadeStart:0.7, fadeEnd:1.5, throwVw:0.18, incomingVw:0.065});
       placeChrome([techChrome], focus, i, {side:'left', vh:0.18, throwVw:0.075});
       placeTechMedia(imgs, focus);
+      playTechVideo(i, inView, focus);
     }
     window.addEventListener('scroll', upd, {passive:true}); window.addEventListener('resize', upd); upd();
     (function techLoop(){ upd(); requestAnimationFrame(techLoop); })();
