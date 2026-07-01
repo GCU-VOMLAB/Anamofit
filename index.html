@@ -106,7 +106,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   /* scroll progress bar */
   #scroll-prog{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:55; background:linear-gradient(90deg,#00E0FF,#d97bff); box-shadow:0 0 12px rgba(0,224,255,.55); }
   /* tech storytelling */
-  .tech-story{ min-height:546svh; position:relative; }
+  .tech-story{ min-height:446svh; position:relative; }
   .tech-sticky{ position:sticky; top:var(--nav-h); min-height:calc(100svh - var(--nav-h)); display:flex; align-items:center; overflow:hidden; }
   .tech-sticky:before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 26% 35%, rgba(0,224,255,.14), transparent 30%), radial-gradient(circle at 80% 58%, rgba(217,123,255,.10), transparent 32%); pointer-events:none; }
   .tech-frame{ position:relative; width:min(1360px,calc(100% - clamp(48px,14vw,288px))); min-height:calc(100svh - var(--nav-h)); margin-inline:auto; padding:0; display:grid; grid-template-columns:minmax(0,min(29vw,480px)) minmax(0,min(42vw,800px)); justify-content:space-between; align-items:center; }
@@ -172,7 +172,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     .ts-img{ border-radius:18px; }
     .tech-story.tech-composite-mode .tech-visual,.tech-story.tech-media-only-mode .tech-visual{ grid-column:auto; width:100%; height:auto; min-height:0; aspect-ratio:1672/941; }
     .tech-copy{ grid-column:auto; grid-row:auto; width:100%; min-height:360px; justify-content:flex-start; }
-    .tech-story{ min-height:546svh; }
+    .tech-story{ min-height:446svh; }
   }
   @media (max-width:480px){
     .site-nav{ justify-content:flex-start; }
@@ -347,7 +347,6 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
             <img class="tech-composite-bg" src="assets/resource/Technologoy_1_background.png" alt=""/>
             <img class="tech-composite-component" src="assets/resource/Technologoy_1_component.png" alt=""/>
           </div>
-          <img class="ts-img" data-i="3" src="assets/gallery/building-red.jpg" alt="Irregular architectural media wall prepared for final correction"/>
         </div>
         <div class="tech-copy reveal d1">
           <div class="flex items-end gap-5">
@@ -362,16 +361,11 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
             </article>
             <article class="ts-step" data-i="1" aria-hidden="true"></article>
             <article class="ts-step" data-i="2" aria-hidden="true"></article>
-            <article class="ts-step" data-i="3" data-overline="Multimodal generation and correction">
-              <h3>Assets and backgrounds are corrected in one flow.</h3>
-              <p>Text prompts, character images, and video references generate production-ready 3D assets, animation instructions, and display-optimized backgrounds while inpainting, distortion correction, and resolution enhancement prepare the final output.</p>
-              <div class="story-meta"><span>3D Assets</span><span>Inpainting</span><span>Resolution</span></div>
-            </article>
           </div>
         </div>
       </div>
       <div class="story-status tech-status" aria-hidden="true">
-        <div class="story-num">01/04</div>
+        <div class="story-num">01/03</div>
         <div class="story-rail"><div class="story-fill"></div></div>
         <div class="story-label">Scroll to compose</div>
       </div>
@@ -690,7 +684,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       'assets/banner.mp4',
       'assets/reel/reel-tiger.mp4','assets/reel/reel-whale.mp4','assets/reel/reel-sail.mp4','assets/reel/reel-globe.mp4',
       'assets/reel/reel-ribbon.mp4','assets/reel/reel-fountain.mp4','assets/reel/circle_screen_sequence.mp4','assets/reel/reel-bluewhale.mp4','assets/reel/reel-orb.mp4',
-      'assets/gallery/building-red.jpg','assets/gallery/wall-maze.jpg',
+      'assets/gallery/wall-maze.jpg',
       'assets/gallery/fountain.jpg','assets/gallery/building-night.jpg','assets/gallery/theater-color.jpg',
       'assets/resource/Technologoy_1_background.png','assets/resource/Technologoy_1_component.png',
       'assets/resource/Technologoy_2_background.png','assets/generated/technology_2_component_overlay.png'
