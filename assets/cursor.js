@@ -7,7 +7,8 @@
   var css = ''
     + 'html, body, a, button, [data-cursor-label], .reel-card, .reel-tile, .gallery-item, .post-toggle, .filter-btn { cursor:none; }'
     + 'input, textarea, select { cursor:text; }'
-    + '#c-glow,#c-aura,#c-dot,#c-ring,#c-label,#c-pulse{ position:fixed; top:0; left:0; pointer-events:none; will-change:transform; }'
+    + '#c-glow,#c-aura,#c-dot,#c-ring,#c-label,#c-pulse{ position:fixed; top:0; left:0; pointer-events:none; }'
+    + '#c-aura,#c-dot,#c-ring{ will-change:transform; }'
     + '#c-glow{ inset:0; z-index:45; mix-blend-mode:screen; opacity:.58; transform:none;'
     + '  background:radial-gradient(240px circle at var(--mx,-400px) var(--my,-400px), rgba(0,224,255,.075), rgba(217,123,255,.045) 32%, transparent 64%); }'
     + '#c-aura{ z-index:9998; width:78px; height:78px; margin:-39px 0 0 -39px; border-radius:9999px;'
@@ -21,7 +22,7 @@
     + '#c-ring.down{ width:26px; height:26px; margin:-13px 0 0 -13px; border-color:rgba(255,255,255,.62); }'
     + '#c-label{ opacity:0; transform:translate(26px,-50%); font:600 10px/1 "JetBrains Mono", monospace; letter-spacing:.18em;'
     + '  text-transform:uppercase; color:#eaf8ff; padding:8px 10px; border:1px solid rgba(255,255,255,.18); border-radius:999px;'
-    + '  background:rgba(5,5,5,.48); backdrop-filter:blur(14px); transition:opacity .18s ease; white-space:nowrap; }'
+    + '  background:rgba(5,5,5,.48); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); transition:opacity .18s ease; white-space:nowrap; }'
     + '#c-pulse{ width:10px; height:10px; margin:-5px 0 0 -5px; border-radius:9999px; border:1px solid rgba(0,224,255,.48); opacity:0; }'
     + '#c-pulse.on{ animation:cPulse .48s ease-out; }'
     + '@keyframes cPulse{ 0%{ opacity:.45; transform:translate(var(--px),var(--py)) scale(1); } 100%{ opacity:0; transform:translate(var(--px),var(--py)) scale(5.5); } }'
@@ -54,8 +55,6 @@
 
   window.addEventListener('pointermove', function(e){
     mx=e.clientX; my=e.clientY;
-    glow.style.setProperty('--mx', mx+'px');
-    glow.style.setProperty('--my', my+'px');
     moveTo(dot,mx,my);
     label.style.transform='translate3d('+(mx+28)+'px,'+(my-8)+'px,0)';
 
@@ -73,15 +72,23 @@
     }
   }, {passive:true});
 
+  var cursorRunning=true, glowX=null, glowY=null;
   (function loop(){
+    if(document.hidden){ cursorRunning=false; return; }
     var ringEase = reduce ? 0.42 : 0.18;
     var auraEase = reduce ? 0.34 : 0.08;
     rx+=(mx-rx)*ringEase; ry+=(my-ry)*ringEase;
     ax+=(mx-ax)*auraEase; ay+=(my-ay)*auraEase;
     moveTo(ring,rx,ry);
     moveTo(aura,ax,ay);
+    // Coalesce the fullscreen screen-blend glow repaint to one update per frame
+    // (was repainted on every raw pointermove — can be >100/s on trackpads).
+    if(glowX!==mx || glowY!==my){ glowX=mx; glowY=my; glow.style.setProperty('--mx', mx+'px'); glow.style.setProperty('--my', my+'px'); }
     requestAnimationFrame(loop);
   })();
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden && !cursorRunning){ cursorRunning=true; requestAnimationFrame(loop); }
+  });
 
   window.addEventListener('pointerdown', function(){
     ring.classList.add('down');
@@ -101,17 +108,22 @@
 
   var magnets=document.querySelectorAll('nav a, a[href$=".html"], a[href^="#"], a[href^="mailto:"]');
   magnets.forEach(function(el){
-    el.style.willChange='transform';
-    el.addEventListener('pointermove', function(e){
+    var rect=null;
+    el.addEventListener('pointerenter', function(){
       if(reduce) return;
-      var r=el.getBoundingClientRect();
-      var x=e.clientX-(r.left+r.width/2), y=e.clientY-(r.top+r.height/2);
+      rect=el.getBoundingClientRect();   // cache once per hover instead of a layout read per move
+      el.style.willChange='transform';   // promote only during the interaction
+    });
+    el.addEventListener('pointermove', function(e){
+      if(reduce || !rect) return;
+      var x=e.clientX-(rect.left+rect.width/2), y=e.clientY-(rect.top+rect.height/2);
       el.style.transform='translate('+(x*0.1)+'px,'+(y*0.18)+'px)';
     });
     el.addEventListener('pointerleave', function(){
+      rect=null;
       el.style.transition='transform .35s cubic-bezier(.16,1,.3,1)';
       el.style.transform='';
-      setTimeout(function(){ el.style.transition=''; }, 350);
+      setTimeout(function(){ el.style.transition=''; el.style.willChange=''; }, 350);
     });
   });
 })();

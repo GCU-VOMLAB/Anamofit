@@ -55,7 +55,9 @@
 
   window.__anamofitStars = { pointer:pointer, get count(){ return stars.length; } };
 
+  var running = true;
   (function loop(t){
+    if(document.hidden){ running = false; return; }
     ctx.clearRect(0, 0, W, H);
     var radius = reduce ? 170 : 300;
     var r2 = radius * radius;
@@ -102,4 +104,7 @@
     ctx.globalAlpha = 1;
     requestAnimationFrame(loop);
   })(0);
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden && !running){ running = true; requestAnimationFrame(loop); }
+  });
 })();

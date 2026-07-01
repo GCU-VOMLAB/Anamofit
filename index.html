@@ -19,7 +19,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
 <style>
   :root{ color-scheme:dark; --nav-h:88px; }
   html,body{ margin:0; background:#050505; overflow-x:clip; }
-  body{ font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1; background:radial-gradient(circle at 50% 0%, rgba(0,224,255,.08), transparent 34%), #050505; }
+  body{ font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1; background:radial-gradient(circle at 50% 0%, rgba(0,224,255,.08), transparent 34%), #050505; isolation:isolate; }
   .font-body{ font-family:'Hanken Grotesk',sans-serif; }
   .material-symbols-outlined{ font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
 
@@ -95,7 +95,7 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   .story-panel h2{ font-family:'Space Grotesk',sans-serif; font-size:clamp(2.6rem,5.25vw,4.6rem); line-height:.96; letter-spacing:0; color:#fff; font-weight:700; max-width:7.5em; }
   .story-panel p{ margin-top:1.35rem; color:#bec7d3; font-size:clamp(1.05rem,1.5vw,1.24rem); line-height:1.65; max-width:29rem; }
   .story-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:.55rem; margin-top:1.5rem; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:rgba(229,226,225,.74); }
-  .story-meta span{ border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.5rem .68rem; background:rgba(5,5,5,.34); backdrop-filter:blur(12px); }
+  .story-meta span{ border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.5rem .68rem; background:rgba(5,5,5,.34); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
   .story-status{ position:absolute; z-index:3; left:50%; right:auto; bottom:clamp(10px,1.4vh,22px); width:min(1360px,calc(100% - clamp(48px,14vw,288px))); transform:translateX(-50%); display:flex; align-items:center; gap:1.45rem; max-width:none; margin:0; font-family:'JetBrains Mono',monospace; color:rgba(229,226,225,.72); }
   .story-num{ min-width:62px; color:#00E0FF; letter-spacing:.18em; font-size:12px; }
   .story-rail{ position:relative; flex:1; height:2px; background:rgba(255,255,255,.16); overflow:hidden; }
@@ -575,7 +575,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   },{passive:true});
   document.addEventListener('mouseleave',function(){ pointer.active=false; });
   window.__anamofitStars={pointer:pointer, get count(){ return stars.length; }};
+  var starsRunning=true;
   (function loop(t){
+    if(document.hidden){ starsRunning=false; return; }
     cx.clearRect(0,0,W,H);
     var radius=reduce?170:300;
     var r2=radius*radius;
@@ -617,6 +619,9 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
     cx.globalAlpha=1;
     requestAnimationFrame(loop);
   })(0);
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden && !starsRunning){ starsRunning=true; requestAnimationFrame(loop); }
+  });
 
   /* ---- Preloader: circles build the ANAMOFIT wordmark, then get absorbed into the nav logo ---- */
   function revealSite(){
@@ -949,24 +954,39 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
         reelInViewLast=inView;
       }
     }
-    function updateReel(){
-      var vh=window.innerHeight, rect=reel.getBoundingClientRect(),
-          navH=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||0,
-          start=reelChapter?reelChapter.offsetHeight:(reelStage?reelStage.offsetTop:0),
-          startAt=Math.max(0,start-navH),
-          total=Math.max(1,reel.offsetHeight-startAt-vh);
-      var raw=Math.min(Math.max(-rect.top-startAt,0),total), p=raw/total, count=Math.max(1,reelPanels.length),
+    // Scroll-invariant values (nav height, section heights) are cached and refreshed
+    // only on resize — they were previously re-read (getComputedStyle/offsetHeight) every frame.
+    var reelVH=window.innerHeight, reelStart=0, reelTotal=1, reelLastY=null, reelRunning=true;
+    function measureReel(){
+      reelVH=window.innerHeight;
+      var navH=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||0;
+      var start=reelChapter?reelChapter.offsetHeight:(reelStage?reelStage.offsetTop:0);
+      reelStart=Math.max(0,start-navH);
+      reelTotal=Math.max(1,reel.offsetHeight-reelStart-reelVH);
+    }
+    function updateReel(force){
+      var y=window.scrollY;
+      if(!force && y===reelLastY) return;   // idle: scroll position unchanged -> nothing to recompute
+      reelLastY=y;
+      var rect=reel.getBoundingClientRect();
+      var raw=Math.min(Math.max(-rect.top-reelStart,0),reelTotal), p=raw/reelTotal, count=Math.max(1,reelPanels.length),
           stageRect=reelStage?reelStage.getBoundingClientRect():rect;
       var focus=storyFocus(p,count), i=indexFromFocus(focus,count);
-      setReel(i, p, stageRect.top<vh && stageRect.bottom>0, focus);
+      setReel(i, p, stageRect.top<reelVH && stageRect.bottom>0, focus);
     }
-    window.addEventListener('scroll', updateReel, {passive:true});
-    window.addEventListener('resize', updateReel);
-    updateReel();
-    (function reelLoop(){ updateReel(); requestAnimationFrame(reelLoop); })();
-    setInterval(updateReel, 90);
-    setTimeout(updateReel, 450);
-    setTimeout(updateReel, 1200);
+    window.addEventListener('scroll', function(){ updateReel(); }, {passive:true});
+    window.addEventListener('resize', function(){ measureReel(); updateReel(true); });
+    measureReel(); updateReel(true);
+    (function reelLoop(){
+      if(document.hidden){ reelRunning=false; return; }
+      updateReel();
+      requestAnimationFrame(reelLoop);
+    })();
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden && !reelRunning){ reelRunning=true; measureReel(); updateReel(true); requestAnimationFrame(reelLoop); }
+    });
+    setTimeout(function(){ measureReel(); updateReel(true); }, 450);
+    setTimeout(function(){ measureReel(); updateReel(true); }, 1200);
   }
 
   /* ---- Technology scroll storytelling ---- */
@@ -1044,8 +1064,14 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       stepsEl.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
       dots.forEach(function(e){ e.classList.toggle('on',+e.dataset.i===i); });
     }
-    function upd(){ var vh=window.innerHeight, top=story.getBoundingClientRect().top, total=story.offsetHeight-vh;
-      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.08,endHold:0.12}), i=indexFromFocus(focus,steps), inView=top<vh && top+story.offsetHeight>0;
+    var techVH=window.innerHeight, techH=0, techTotal=1, techLastY=null, techRunning=true;
+    function measureTech(){ techVH=window.innerHeight; techH=story.offsetHeight; techTotal=techH-techVH; }
+    function upd(force){
+      var y=window.scrollY;
+      if(!force && y===techLastY) return;   // idle: scroll position unchanged
+      techLastY=y;
+      var top=story.getBoundingClientRect().top, total=techTotal;
+      var s=Math.min(Math.max(-top,0),Math.max(1,total)), p=total>0?s/total:0, focus=storyFocus(p,steps,{hold:0.08,endHold:0.12}), i=indexFromFocus(focus,steps), inView=top<techVH && top+techH>0;
       setA(i);
       if(techFill) techFill.style.width=(p*100).toFixed(2)+'%';
       placeDeck(stepsEl, focus, {side:'left', vh:0.82, blur:6, incomingBlur:5, scale:0.032, fadeStart:0.7, fadeEnd:1.5, throwVw:0.18, incomingVw:0.065});
@@ -1053,9 +1079,11 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       placeTechMedia(imgs, focus);
       playTechVideo(i, inView, focus);
     }
-    window.addEventListener('scroll', upd, {passive:true}); window.addEventListener('resize', upd); upd();
-    (function techLoop(){ upd(); requestAnimationFrame(techLoop); })();
-    setInterval(upd, 90);
+    window.addEventListener('scroll', function(){ upd(); }, {passive:true});
+    window.addEventListener('resize', function(){ measureTech(); upd(true); });
+    measureTech(); upd(true);
+    (function techLoop(){ if(document.hidden){ techRunning=false; return; } upd(); requestAnimationFrame(techLoop); })();
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden && !techRunning){ techRunning=true; measureTech(); upd(true); requestAnimationFrame(techLoop); } });
   }
 
   /* ---- Word-stagger reveal on tagged headings ---- */
