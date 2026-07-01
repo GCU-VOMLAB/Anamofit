@@ -1,3 +1,4 @@
-*.mp4
+
+!assets/**/*.mp4
 docs/
 Anamofit_resource/
