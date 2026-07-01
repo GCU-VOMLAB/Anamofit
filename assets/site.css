@@ -59,11 +59,11 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .team-group-name{ color:#fff; font-size:clamp(1rem,1.35vw,1.35rem); font-weight:600; }
 .team-group-label{ color:#00E0FF; font-size:12px; }
 .team-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(.75rem,1.3vw,1.1rem); }
-.team-slot{ min-height:clamp(168px,16vw,230px); }
+.team-slot{ min-height:clamp(300px,20vw,400px); }
 .team-slot.empty{ visibility:hidden; pointer-events:none; }
 .team-card{ height:100%; overflow:hidden; border-radius:18px; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035)); box-shadow:0 22px 70px rgba(0,0,0,.3); }
-.team-photo{ position:relative; height:clamp(96px,10vw,142px); overflow:hidden; background:rgba(0,224,255,.07); }
-.team-photo img{ display:block; width:100%; height:100%; object-fit:cover; filter:saturate(.92) contrast(1.02); }
+.team-photo{ position:relative; height:clamp(132px,13vw,184px); overflow:hidden; background:rgba(0,224,255,.07); }
+.team-photo img{ display:block; width:100%; height:100%; object-fit:cover; object-position:center 28%; filter:saturate(.92) contrast(1.02); }
 .team-fallback{ position:absolute; inset:0; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-size:clamp(1.6rem,3vw,3.25rem); color:#00E0FF; background:radial-gradient(circle at 45% 35%, rgba(0,224,255,.18), transparent 48%), rgba(3,10,13,.78); }
 .team-info{ padding:1rem; }
 .team-name-ko{ color:#fff; font-family:'Space Grotesk',sans-serif; font-size:clamp(1.05rem,1.45vw,1.35rem); font-weight:700; line-height:1.15; }
