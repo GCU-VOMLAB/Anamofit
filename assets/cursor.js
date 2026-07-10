@@ -5,7 +5,7 @@
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var css = ''
-    + 'html, body, a, button, [data-cursor-label], .reel-card, .reel-tile, .gallery-item, .post-toggle, .filter-btn { cursor:none; }'
+    + 'html, body, a, button, [data-cursor-label], .post-toggle, .filter-btn { cursor:none; }'
     + 'input, textarea, select { cursor:text; }'
     + '#c-glow,#c-aura,#c-dot,#c-ring,#c-label,#c-pulse{ position:fixed; top:0; left:0; pointer-events:none; }'
     + '#c-aura,#c-dot,#c-ring{ will-change:transform; }'
@@ -47,7 +47,7 @@
   document.body.appendChild(pulse);
 
   var mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my, ax=mx, ay=my;
-  var HOVER='a, button, [data-cursor-label], .reel-tile, .reel-card, .gallery-item, .post-toggle, .filter-btn, input, textarea';
+  var HOVER='a, button, [data-cursor-label], .post-toggle, .filter-btn, input, textarea';
 
   function moveTo(el,x,y){
     el.style.transform='translate3d('+x+'px,'+y+'px,0)';

@@ -15,11 +15,7 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .reveal.in{ opacity:1; transform:none; }
 .reveal.d1{ transition-delay:.08s } .reveal.d2{ transition-delay:.16s } .reveal.d3{ transition-delay:.24s } .reveal.d4{ transition-delay:.32s }
 
-#spot{ position:fixed; inset:0; pointer-events:none; z-index:60; mix-blend-mode:screen;
-  background:radial-gradient(360px circle at var(--mx,-300px) var(--my,-300px), rgba(0,224,255,0.10), transparent 60%); }
-
 .nav-link.active{ color:#00E0FF; }
-.grid-bg{ background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:60px 60px; }
 
 .site-nav{ position:sticky; top:0; z-index:60; min-height:var(--nav-h); width:100%; padding:0 clamp(24px,5.6vw,88px); display:flex; align-items:center; justify-content:space-between; background:transparent; transition:min-height .25s ease; }
 .site-nav .brand{ font-family:'Space Grotesk',sans-serif; font-size:clamp(1.35rem,1.7vw,1.9rem); font-weight:700; color:#fff; letter-spacing:0; }
@@ -37,9 +33,6 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .page-name{ font-family:'Space Grotesk',sans-serif; font-size:clamp(5.2rem,11vw,9rem); line-height:.88; letter-spacing:0; text-transform:none; color:#fff; font-weight:700; }
 .page-title{ grid-column:1 / -1; margin-top:clamp(2.1rem,5vw,4.8rem); width:100%; max-width:none; font-family:'Space Grotesk',sans-serif; font-size:clamp(1.9rem,3.25vw,3.8rem); line-height:1.08; font-weight:700; color:#fff; }
 .page-copy{ grid-column:1 / -1; margin-top:clamp(1.15rem,2vw,1.8rem); width:100%; max-width:none; color:#bec7d3; font-size:clamp(1.05rem,1.35vw,1.24rem); line-height:1.7; align-self:start; }
-.page-hero .reveal.d2.mt-4.text-lg.text-on-surface-variant{ display:none; }
-.board-end-note + p{ display:none; }
-
 .post-toggle{ padding:clamp(1.75rem,2.8vw,2.5rem)!important; gap:clamp(1.25rem,2.2vw,2rem)!important; }
 .post-toggle h3{ font-size:clamp(1.25rem,2vw,1.75rem)!important; line-height:1.2; }
 .post-body p{ font-size:clamp(1rem,1.2vw,1.13rem); line-height:1.7; padding-bottom:2.25rem!important; }

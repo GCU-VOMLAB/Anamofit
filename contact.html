@@ -5,18 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Anamofit - Adaptive AI Production for Anamorphic Media Walls</title>
 <meta name="description" content="Get in touch with the Anamofit team for partnerships, media-wall projects, and demos."/>
-<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=send&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="assets/site.css"/>
-<script>
-tailwind.config = { darkMode:"class", theme:{ extend:{
-  colors:{ "cyber-cyan":"#00E0FF","primary":"#93ccff","primary-container":"#00aaff","tertiary":"#ecb2ff","tertiary-container":"#d97bff","on-surface":"#e5e2e1","on-surface-variant":"#bec7d3","void-surface":"#121218","deep-navy":"#050516","text-silver":"#E0E0E0" },
-  fontFamily:{ display:["Space Grotesk","sans-serif"], head:["Space Grotesk","sans-serif"], body:["Hanken Grotesk","sans-serif"], mono:["JetBrains Mono","monospace"] },
-}}}
-</script>
+<!-- Static Tailwind build captured from the Play CDN output (same rules, no runtime compiler). -->
+<link href="assets/tailwind-contact.css" rel="stylesheet"/>
 </head>
 <body class="min-h-[100svh] flex flex-col">
 <canvas id="stars" aria-hidden="true"></canvas>
@@ -104,7 +99,6 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
   "use strict";
   /* ---- Contact form ---- */
   var USE_FORMSPREE = "https://formspree.io/f/xgojzayq";
-  var TO = "dlawhks@naver.com";
   var MAP_ADDRESS = "Gachon University, Seongnam, Republic of Korea";
   var TEAM_FILE = "contact_members.csv";
   var DEFAULT_PROFILE_IMAGE = "contact/default_profile.png";
@@ -319,10 +313,10 @@ tailwind.config = { darkMode:"class", theme:{ extend:{
       note.textContent='Sending...'; note.style.color='';
       fetch(USE_FORMSPREE,{ method:'POST', headers:{'Accept':'application/json'}, body:new FormData(f) })
         .then(function(r){ if(r.ok){ form.reset(); note.textContent='Thanks, your message has been sent.'; note.style.color='#93ccff'; } else { throw 0; } })
-        .catch(function(){ note.textContent='Could not send. Please email '+TO+' directly.'; note.style.color='#ffb4ab'; });
+        .catch(function(){ note.textContent='Could not send. Please try again later.'; note.style.color='#ffb4ab'; });
       return;
     }
-    note.textContent='Could not send. Please email '+TO+' directly.'; note.style.color='#ffb4ab';
+    note.textContent='Could not send. Please try again later.'; note.style.color='#ffb4ab';
   });
 
   /* reveal */
