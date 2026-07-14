@@ -62,7 +62,11 @@
     <div class="flex flex-wrap gap-6 justify-center text-on-surface-variant/70 mono" style="font-size:12px;text-transform:uppercase;letter-spacing:.12em">
       <a href="index.html#about" class="hover:text-cyber-cyan transition-colors">About</a><a href="index.html#reel" class="hover:text-cyber-cyan transition-colors">Design</a><a href="index.html#tech" class="hover:text-cyber-cyan transition-colors">Technology</a><a href="board.html" class="hover:text-cyber-cyan transition-colors">Board</a><a href="contact.html" class="hover:text-cyber-cyan transition-colors">Contact</a>
     </div>
-    <div class="text-on-surface-variant/40 text-center md:text-right mono" style="font-size:11px;letter-spacing:.1em">&copy; 2026 ANAMOFIT.</div>
+    <div class="text-on-surface-variant/40 text-center md:text-right mono" style="font-size:11px;letter-spacing:.08em;line-height:1.7">
+      <div>Supported by IITP &middot; COMPA &middot; Gyeonggi RISE Center</div>
+      <a href="board.html#acknowledgements" class="hover:text-cyber-cyan transition-colors" style="color:#93ccff">Acknowledgements &rarr;</a>
+      <div>&copy; 2026 ANAMOFIT.</div>
+    </div>
   </div>
 </footer>
 
@@ -269,6 +273,7 @@
       var c = CAT[p.cat] || {label:p.cat,color:'#bec7d3'};
       var el = document.createElement('div');
       el.className='reveal glass rounded-2xl overflow-hidden';
+      if(p.slug) el.id = p.slug.replace(/[^a-z0-9_-]/gi, '-');
       if(i>0) el.classList.add('d1');
       el.innerHTML =
         '<button class="post-toggle w-full text-left p-6 md:p-7 flex items-start gap-5 hover:bg-white/[0.03] transition">'+
@@ -289,6 +294,22 @@
     });
     bindToggles();
     observeReveals();
+    openHashPost();
+  }
+
+  function openHashPost(){
+    var id = window.location.hash.slice(1);
+    if(!id) return;
+    var post = document.getElementById(id);
+    if(!post) return;
+    var body = post.querySelector('.post-body');
+    var icon = post.querySelector('.post-toggle .material-symbols-outlined');
+    window.requestAnimationFrame(function(){
+      post.classList.add('in');
+      if(body) body.style.maxHeight = body.scrollHeight+'px';
+      if(icon) icon.style.transform='rotate(180deg)';
+      post.scrollIntoView({behavior:'smooth',block:'center'});
+    });
   }
 
   function bindToggles(){
@@ -320,6 +341,7 @@
   }
 
   loadPosts();
+  window.addEventListener('hashchange', openHashPost);
 
   /* nav condense */
   var nav=document.getElementById('nav');
