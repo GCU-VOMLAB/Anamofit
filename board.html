@@ -59,14 +59,11 @@
 <footer class="relative z-10 border-t border-white/5 bg-[#070708] px-6 py-12">
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
     <div class="head text-2xl font-bold text-text-silver">ANAMOFIT</div>
-    <div class="flex flex-wrap gap-6 justify-center text-on-surface-variant/70 mono" style="font-size:12px;text-transform:uppercase;letter-spacing:.12em">
-      <a href="index.html#about" class="hover:text-cyber-cyan transition-colors">About</a><a href="index.html#reel" class="hover:text-cyber-cyan transition-colors">Design</a><a href="index.html#tech" class="hover:text-cyber-cyan transition-colors">Technology</a><a href="board.html" class="hover:text-cyber-cyan transition-colors">Board</a><a href="contact.html" class="hover:text-cyber-cyan transition-colors">Contact</a>
-    </div>
-    <div class="text-on-surface-variant/40 text-center md:text-right mono" style="font-size:11px;letter-spacing:.08em;line-height:1.7">
+    <div class="text-on-surface-variant/40 text-center mono" style="font-size:11px;letter-spacing:.08em;line-height:1.7">
       <div>Supported by IITP &middot; COMPA &middot; Gyeonggi RISE Center</div>
-      <a href="board.html#acknowledgements" class="hover:text-cyber-cyan transition-colors" style="color:#93ccff">Acknowledgements &rarr;</a>
-      <div>&copy; 2026 ANAMOFIT.</div>
+      <a href="https://anamofit.p-e.kr/board.html#acknowledgements" class="hover:text-cyber-cyan transition-colors" style="color:#93ccff">Acknowledgements &rarr;</a>
     </div>
+    <div class="text-on-surface-variant/40 text-center md:text-right mono" style="font-size:11px;letter-spacing:.1em">&copy; 2026 ANAMOFIT.</div>
   </div>
 </footer>
 
@@ -277,9 +274,9 @@
       if(i>0) el.classList.add('d1');
       el.innerHTML =
         '<button class="post-toggle w-full text-left p-6 md:p-7 flex items-start gap-5 hover:bg-white/[0.03] transition">'+
-          '<div class="shrink-0 mono text-on-surface-variant/60" style="font-size:12px;min-width:92px">'+escapeHTML(p.date)+'</div>'+
+          '<div class="shrink-0 mono text-on-surface-variant/60" style="font-size:12px;min-width:92px;margin-top: 4px;">'+escapeHTML(p.date)+'</div>'+
           '<div class="flex-grow">'+
-            '<span class="inline-block mono mb-2" style="font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:'+c.color+';border:1px solid '+c.color+'55;border-radius:9999px;padding:2px 10px">'+escapeHTML(c.label)+'</span>'+
+            '<span class="inline-block mono mb-2" style="font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:'+c.color+';border:1px solid '+c.color+'55;border-radius:9999px;padding:2px 10px;margin-bottom: 14px;">'+escapeHTML(c.label)+'</span>'+
             '<h3 class="head text-lg md:text-xl text-white">'+escapeHTML(p.title)+'</h3>'+
           '</div>'+
           '<span class="material-symbols-outlined text-on-surface-variant/60 transition-transform shrink-0">expand_more</span>'+

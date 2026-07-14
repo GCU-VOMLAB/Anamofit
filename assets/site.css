@@ -37,7 +37,7 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .post-toggle h3{ font-size:clamp(1.25rem,2vw,1.75rem)!important; line-height:1.2; }
 .post-body p{ font-size:clamp(1rem,1.2vw,1.13rem); line-height:1.7; padding-bottom:2.25rem!important; }
 .post-body-inner{ padding:0 clamp(1.5rem,2.8vw,2.5rem) clamp(2rem,3vw,2.75rem); padding-left:clamp(1.5rem,13vw,165px); color:#bec7d3; font-size:clamp(1rem,1.2vw,1.13rem); line-height:1.7; }
-.post-body-inner p{ padding:0!important; margin:0; }
+.post-body-inner p{ padding:0!important; margin-top:20px; }
 .post-media{ margin-top:1.5rem; width:min(100%,980px); overflow:hidden; border-radius:18px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04); box-shadow:0 28px 80px rgba(0,0,0,.35); }
 .post-media img,.post-media video{ display:block; width:100%; height:auto; max-height:70svh; object-fit:contain; background:#050505; }
 
