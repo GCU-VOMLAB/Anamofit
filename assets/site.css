@@ -61,6 +61,7 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .team-info{ min-width:0; padding:clamp(.55rem,1.1vw,1rem); }
 .team-name-ko{ color:#fff; font-family:'Space Grotesk',sans-serif; font-size:clamp(.8rem,1.35vw,1.35rem); font-weight:700; line-height:1.15; overflow-wrap:anywhere; }
 .team-name-en{ margin-top:clamp(.35rem,.65vw,.8rem); color:#bec7d3; font-family:'JetBrains Mono',monospace; font-size:clamp(8px,.72vw,11px); letter-spacing:.08em; text-transform:uppercase; word-break:break-word; }
+.team-role{ margin-top:clamp(.3rem,.55vw,.65rem); color:rgba(0,224,255,.8); font-family:'JetBrains Mono',monospace; font-size:clamp(8px,.68vw,10px); letter-spacing:.12em; text-transform:uppercase; word-break:break-word; }
 .team-message{ color:#bec7d3; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
 
 @media (max-width:767px){

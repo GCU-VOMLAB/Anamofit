@@ -129,11 +129,11 @@
   function decodeCSVBuffer(buffer){
     if(!buffer) return '';
     var bytes = new Uint8Array(buffer);
-    var encoding = 'utf-8';
-    if(bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) encoding = 'utf-16le';
-    else if(bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) encoding = 'utf-16be';
-    try { return new TextDecoder(encoding).decode(buffer); }
-    catch(err){ return new TextDecoder('utf-8').decode(buffer); }
+    if(bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) return new TextDecoder('utf-16le').decode(buffer);
+    if(bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) return new TextDecoder('utf-16be').decode(buffer);
+    // Excel/Notepad often save ANSI (CP949): strict UTF-8 first, EUC-KR as fallback.
+    try { return new TextDecoder('utf-8', { fatal:true }).decode(buffer); }
+    catch(err){ return new TextDecoder('euc-kr').decode(buffer); }
   }
 
   function parseCSVRows(text){
@@ -193,10 +193,11 @@
     var group = item.group || item.affiliation || item.type;
     var ko = item.name_ko || item.ko || item.name || '';
     var en = item.name_en || item.en || '';
+    var role = item.role || item.title || item.position || '';
     var image = item.image || item.img || item.path || DEFAULT_PROFILE_IMAGE;
     var location = item.location || item['위치'] || '0,0';
     if(!ko && !en) return null;
-    return { group:groupKey(group), ko:ko, en:en, image:image, location:parseLocation(location) };
+    return { group:groupKey(group), ko:ko, en:en, role:role, image:image, location:parseLocation(location) };
   }
 
   function teamCSVURLs(){
@@ -249,7 +250,8 @@
       '</div>'+
       '<div class="team-info">'+
         '<div class="team-name-ko">'+escapeHTML(member.ko)+'</div>'+
-        '<div class="team-name-en">'+escapeHTML(member.en)+'</div>'+
+        (member.en ? '<div class="team-name-en">'+escapeHTML(member.en)+'</div>' : '')+
+        (member.role ? '<div class="team-role">'+escapeHTML(member.role)+'</div>' : '')+
       '</div>'+
     '</article>';
   }
