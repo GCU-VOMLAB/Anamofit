@@ -51,10 +51,11 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .team-group-head{ display:flex; align-items:center; gap:1rem; margin-bottom:1rem; font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.18em; }
 .team-group-name{ color:#fff; font-size:clamp(1rem,1.35vw,1.35rem); font-weight:600; }
 .team-group-label{ color:#00E0FF; font-size:12px; }
-.team-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(.75rem,1.3vw,1.1rem); }
+.team-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,210px)); gap:clamp(.75rem,1.3vw,1.1rem); }
 .team-slot{ min-width:0; display:flex; min-height:0; }
 .team-slot.empty{ visibility:hidden; pointer-events:none; }
-.team-card{ width:min(100%,210px); aspect-ratio:25/36; display:grid; grid-template-rows:minmax(0,1fr) auto; overflow:hidden; border-radius:18px; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035)); box-shadow:0 22px 70px rgba(0,0,0,.3); }
+/* Fixed height (not aspect-ratio) so narrowing the card doesn't shrink it vertically. */
+.team-card{ width:min(100%,220px); height:360px; display:grid; grid-template-rows:minmax(0,1fr) auto; overflow:hidden; border-radius:18px; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035)); box-shadow:0 22px 70px rgba(0,0,0,.3); }
 .team-photo{ position:relative; min-height:0; overflow:hidden; background:rgba(0,224,255,.07); }
 .team-photo img{ display:block; width:100%; height:100%; object-fit:fill; object-position:center 28%; filter:saturate(.92) contrast(1.02); }
 .team-fallback{ position:absolute; inset:0; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-size:clamp(1.6rem,3vw,3.25rem); color:#00E0FF; background:radial-gradient(circle at 45% 35%, rgba(0,224,255,.18), transparent 48%), rgba(3,10,13,.78); }
@@ -81,7 +82,7 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
   .team-source{ margin-top:.9rem; white-space:normal; }
   .team-grid{ gap:.55rem; }
   .team-slot{ min-height:0; }
-  .team-card{ width:100%; }
+  .team-card{ width:100%; height:auto; aspect-ratio:25/36; }
   .team-info{ padding:clamp(.4rem,2.2vw,.8rem); }
   .team-name-ko{ font-size:clamp(.68rem,3.1vw,.95rem); }
   .team-name-en{ font-size:clamp(7px,2.4vw,9px); }
