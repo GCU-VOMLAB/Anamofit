@@ -51,7 +51,7 @@ body{ overflow-x:hidden; font-family:'Hanken Grotesk',sans-serif; color:#e5e2e1;
 .team-group-head{ display:flex; align-items:center; gap:1rem; margin-bottom:1rem; font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.18em; }
 .team-group-name{ color:#fff; font-size:clamp(1rem,1.35vw,1.35rem); font-weight:600; }
 .team-group-label{ color:#00E0FF; font-size:12px; }
-.team-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,210px)); gap:clamp(.75rem,1.3vw,1.1rem); }
+.team-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,215px)); gap:clamp(1.75rem,2.3vw,2.1rem); }
 .team-slot{ min-width:0; display:flex; min-height:0; }
 .team-slot.empty{ visibility:hidden; pointer-events:none; }
 /* Fixed height (not aspect-ratio) so narrowing the card doesn't shrink it vertically. */
